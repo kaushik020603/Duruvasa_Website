@@ -1,0 +1,196 @@
+{
+  "items": [
+    {
+      "slug": "threat-detection",
+      "title": "Threat Detection",
+      "tagline": "Spot danger before it becomes disaster.",
+      "intro": "We continuously watch your networks, systems and cloud for suspicious behavior, using AI and expert analysts to separate real attacks from noise so you can respond in minutes instead of hours.",
+      "covers": [
+        "Behavioral analytics to surface unusual logins, data movement and privilege changes",
+        "Alert triage that filters false positives and prioritises what matters",
+        "Detection use-cases mapped to common attack techniques",
+        "Clear escalation paths and runbooks for confirmed incidents"
+      ],
+      "steps": [
+        {
+          "title": "Baseline",
+          "text": "We learn what normal looks like across identities, workloads and network traffic."
+        },
+        {
+          "title": "Instrument",
+          "text": "Logs and telemetry from cloud, endpoints and applications are routed into one view."
+        },
+        {
+          "title": "Detect",
+          "text": "Rules and machine-learning models flag deviations and known attack patterns."
+        },
+        {
+          "title": "Respond",
+          "text": "Analysts validate alerts and guide containment, with lessons fed back into detection."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "How does AI help with threat detection?",
+          "a": "AI and machine learning highlight unusual patterns across large volumes of events that humans would miss, then rank them so analysts focus on the most dangerous activity first."
+        },
+        {
+          "q": "Will this create a flood of false alerts?",
+          "a": "Detection is tuned to your environment and reviewed by analysts, so the goal is fewer, higher-quality alerts rather than more noise."
+        },
+        {
+          "q": "Does it cover cloud as well as on-premises systems?",
+          "a": "Yes. Coverage spans cloud, endpoints and network traffic, scoped to the systems you want protected."
+        },
+        {
+          "q": "What happens when a real threat is found?",
+          "a": "You receive a prioritised alert with context and recommended containment steps, and we help you respond."
+        }
+      ]
+    },
+    {
+      "slug": "compliance-management",
+      "title": "Compliance Management",
+      "tagline": "Turn complex regulation into a strategic advantage.",
+      "intro": "We build controls, policies and audit-ready evidence into your cloud so you always know where sensitive data lives, who can access it and how it is protected.",
+      "covers": [
+        "Gap assessments against the security and privacy standards that apply to you",
+        "Control design, policy writing and ownership mapping",
+        "Evidence collection that makes audits faster and less disruptive",
+        "Ongoing governance so compliance stays current as you change"
+      ],
+      "steps": [
+        {
+          "title": "Scope",
+          "text": "Identify the regulations, customer requirements and data flows that apply."
+        },
+        {
+          "title": "Assess",
+          "text": "Measure current controls against the requirements and rank the gaps."
+        },
+        {
+          "title": "Remediate",
+          "text": "Implement controls and policies, prioritising the highest-risk gaps."
+        },
+        {
+          "title": "Evidence",
+          "text": "Capture continuous proof so you are ready for auditors, customers and regulators."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Which standards do you support?",
+          "a": "We work to the frameworks relevant to your industry and customers. Tell us what you need during a consultation and we will scope it with you."
+        },
+        {
+          "q": "Can this make audits easier?",
+          "a": "Yes. Building evidence collection into daily operations means audits draw on existing records rather than a last-minute scramble."
+        },
+        {
+          "q": "Is compliance a one-time project?",
+          "a": "No. Regulations and your systems both change, so we treat compliance as an ongoing governance process."
+        },
+        {
+          "q": "Does compliance guarantee security?",
+          "a": "Compliance sets a baseline. We pair it with detection and monitoring so you are protected, not just certified."
+        }
+      ]
+    },
+    {
+      "slug": "continuous-monitoring",
+      "title": "Continuous Monitoring",
+      "tagline": "Security that never sleeps.",
+      "intro": "Every login, configuration change and data flow in your cloud is watched in real time, so risky behavior is flagged instantly and small issues are contained before they grow into incidents.",
+      "covers": [
+        "24/7 visibility across identities, configurations and data flows",
+        "Detection of misconfigurations and drift from your security baseline",
+        "Real-time alerting with clear severity and ownership",
+        "Regular reporting on posture, trends and open risks"
+      ],
+      "steps": [
+        {
+          "title": "Connect",
+          "text": "Integrate your cloud accounts and key systems with read-only access where possible."
+        },
+        {
+          "title": "Watch",
+          "text": "Monitor activity and configuration continuously against your baseline."
+        },
+        {
+          "title": "Alert",
+          "text": "Notify the right people the moment risky behavior appears."
+        },
+        {
+          "title": "Improve",
+          "text": "Review trends and close recurring blind spots."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is monitoring really 24/7?",
+          "a": "Our approach is built around round-the-clock coverage so suspicious activity is not left waiting until business hours."
+        },
+        {
+          "q": "Will monitoring slow down our systems?",
+          "a": "Monitoring is designed to be non-intrusive and rely on logs and APIs rather than adding load to your workloads."
+        },
+        {
+          "q": "Who gets alerted?",
+          "a": "Alerts are routed to the owners you define, with severity levels so critical events get immediate attention."
+        },
+        {
+          "q": "Can we see reports?",
+          "a": "Yes. You receive posture and trend reporting so stakeholders can see progress."
+        }
+      ]
+    },
+    {
+      "slug": "tailored-solutions",
+      "title": "Tailored Solutions",
+      "tagline": "Security built around your business.",
+      "intro": "We align controls, policies and technology with your cloud architecture, risk profile and growth plans, so you close the gaps that matter and avoid paying for what you do not need.",
+      "covers": [
+        "Risk assessment sized to your industry, scale and appetite",
+        "Roadmaps that sequence improvements by impact and effort",
+        "Right-sized tooling and process, not one-size-fits-all packages",
+        "Security that scales as you add apps, users and regions"
+      ],
+      "steps": [
+        {
+          "title": "Discover",
+          "text": "Understand your business, architecture and what you most need to protect."
+        },
+        {
+          "title": "Prioritise",
+          "text": "Rank risks and choose the controls with the best return."
+        },
+        {
+          "title": "Build",
+          "text": "Implement a plan that fits your team, budget and timeline."
+        },
+        {
+          "title": "Evolve",
+          "text": "Revisit the plan as your business and the threat landscape change."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Do you offer fixed packages?",
+          "a": "We start from your needs rather than a fixed package, then scope the services that fit."
+        },
+        {
+          "q": "We are a small team. Is this suitable?",
+          "a": "Yes. Plans are sized to your organisation, so you only invest in what reduces your real risk."
+        },
+        {
+          "q": "Can we start with one area and expand?",
+          "a": "Absolutely. Many organisations begin with a single priority and grow coverage over time."
+        },
+        {
+          "q": "How do we get started?",
+          "a": "Use the contact form or book a consultation and we will discuss your situation."
+        }
+      ]
+    }
+  ]
+}

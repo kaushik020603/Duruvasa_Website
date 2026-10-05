@@ -1,0 +1,10 @@
+{
+  "name": "DuRuVaSa CloudSec",
+  "short_name": "DuRuVaSa",
+  "description": "Cybersecurity consulting: threat detection, compliance and 24/7 monitoring.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#131010",
+  "theme_color": "#131010",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

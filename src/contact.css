@@ -1,0 +1,48 @@
+/* ================= free resource (gated download) ================= */
+.resource { background: linear-gradient(135deg, #0f2a1d 0%, #10243a 100%); color: #fffaf8; padding: 90px 20px; position: relative; overflow: hidden; }
+.resource::before { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; right: -160px; top: -200px; background: radial-gradient(circle, rgba(127, 203, 127, .28), transparent 65%); pointer-events: none; }
+.resource-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; position: relative; }
+.resource-copy h2 { font: 700 clamp(28px, 4.2vw, 44px)/1.1 Roboto, sans-serif; margin: 6px 0 14px; }
+.resource-desc { font: 400 17px/1.6 Arial, sans-serif; color: rgba(255, 250, 248, .88); margin-bottom: 18px; }
+.resource-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.resource-points li { position: relative; padding-left: 30px; font: 400 15.5px/1.5 Arial, sans-serif; }
+.resource-points li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: #7fcb7f; color: #0c1b14; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+.resource-card { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .18); border-radius: 20px; padding: 26px; backdrop-filter: blur(8px); display: grid; gap: 18px; }
+.pdf-cover { width: 150px; aspect-ratio: 3 / 4; margin: -50px 0 0 auto; border-radius: 8px; background: linear-gradient(160deg, #131010 55%, #2f9e57); border-top: 6px solid #7fcb7f; padding: 18px 14px; display: grid; align-content: space-between; box-shadow: 0 18px 40px rgba(0, 0, 0, .45); transform: rotate(4deg); transition: transform .4s; }
+.resource-card:hover .pdf-cover { transform: rotate(0) translateY(-4px); }
+.pdf-cover b { font: 700 16px/1.2 Roboto, sans-serif; } .pdf-cover small { font: 400 10px Arial, sans-serif; color: #7fcb7f; letter-spacing: .08em; text-transform: uppercase; } .pdf-cover span { font: 400 10px Arial, sans-serif; opacity: .8; } .pdf-cover i { width: 28px; height: 3px; background: #7fcb7f; }
+.resource form { display: grid; gap: 12px; }
+.resource input:not([type=checkbox]) { width: 100%; padding: 13px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .25); background: rgba(0, 0, 0, .3); color: #fff; font: 400 15px Arial, sans-serif; }
+.resource input:focus { outline: none; border-color: #7fcb7f; }
+.resource input[aria-invalid="true"] { border-color: #ff8a8a; }
+.consent { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; font: 400 12.5px/1.5 Arial, sans-serif; color: rgba(255, 250, 248, .85); }
+.consent input { margin-top: 2px; width: 18px; height: 18px; accent-color: #7fcb7f; }
+.consent a { color: #7fcb7f; }
+.resource .btn-light { background: #7fcb7f; color: #0c1b14; padding: 14px 20px; font-size: 15px; justify-self: stretch; text-align: center; text-decoration: none; }
+.resource .err { color: #ff9b9b; font-size: 12.5px; }
+.resource-done h3 { font: 700 22px Roboto, sans-serif; margin-bottom: 8px; } .resource-done p { font: 400 15px/1.55 Arial, sans-serif; margin-bottom: 16px; color: rgba(255, 250, 248, .88); }
+.resource-done .btn-light { display: inline-block; }
+@media (max-width: 860px) { .resource-inner { grid-template-columns: 1fr; gap: 56px; } .pdf-cover { margin-right: 0; width: 120px; } }
+
+/* ================= floating Call / WhatsApp ================= */
+.fab { position: fixed; z-index: 70; display: flex; gap: 10px; }
+.fab a { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font: 700 14px Roboto, sans-serif; border-radius: 99px; color: #fff; transition: transform .2s, box-shadow .2s; }
+.fab-call { background: #131010; padding: 13px 20px; } .fab-wa { background: #0e7a3e; padding: 13px 20px; }
+.fab a:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, .3); }
+/* desktop: one WhatsApp bubble, bottom-left, call button tucked away */
+@media (min-width: 761px) {
+  .fab { left: 18px; bottom: 18px; flex-direction: column; align-items: flex-start; }
+  .fab-wa { width: 56px; height: 56px; padding: 0; background: #25d366; box-shadow: 0 8px 22px rgba(37, 211, 102, .45); }
+  .fab-wa span { position: absolute; left: 64px; background: #131010; color: #fff; padding: 7px 12px; border-radius: 8px; white-space: nowrap; opacity: 0; transform: translateX(-6px); transition: opacity .2s, transform .2s; pointer-events: none; font-size: 13px; }
+  .fab-wa:hover span, .fab-wa:focus-visible span { opacity: 1; transform: none; }
+  .fab-wa { position: relative; }
+  .fab .fab-call { display: none; }
+}
+/* mobile: full-width sticky bar with both actions */
+@media (max-width: 760px) {
+  .fab { left: 0; right: 0; bottom: 0; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(255, 255, 255, .96); backdrop-filter: blur(10px); border-top: 1px solid rgba(19, 16, 16, .1); box-shadow: 0 -8px 24px rgba(0, 0, 0, .12); }
+  .fab a { flex: 1; padding: 14px 10px; font-size: 15px; border-radius: 12px; }
+  body { padding-bottom: 72px; }
+  .to-top { bottom: 84px; }
+}
+@media print { .fab { display: none; } }

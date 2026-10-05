@@ -1,0 +1,61 @@
+/* ===== team section redesign ===== */
+.team { padding: 56px 16px 64px; min-height: 0; }
+.team h2 { margin-bottom: 40px; }
+.team .member { all: unset; }
+
+.avatar { position: relative; border-radius: 50%; padding: 4px; background: conic-gradient(from 0deg, #7fcb7f, #fffaf8, #2a2a2a, #7fcb7f); animation: spin 6s linear infinite; flex: none; }
+.avatar img { border-radius: 50%; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; border: 3px solid var(--slate); background: var(--slate); }
+.avatar-lg { width: 150px; height: 150px; margin: 0 auto 16px; }
+.avatar-xl { width: 190px; height: 190px; }
+.avatar > img { animation: spin 6s linear infinite reverse; }
+
+.founder { max-width: 1000px; margin: 0 auto 48px; display: flex; gap: 32px; align-items: center; background: rgba(42,42,42,.35); border: 1px solid rgba(42,42,42,.55); padding: 28px; backdrop-filter: blur(4px); }
+.founder-body h3 { font: 700 26px Roboto, sans-serif; margin: 6px 0 12px; }
+.founder-body h3 a, .partner-card h3 a { color: var(--cream); text-decoration: none; background: linear-gradient(var(--cream), var(--cream)) 0 100% / 0 2px no-repeat; transition: background-size .4s; }
+.founder-body h3 a:hover, .partner-card h3 a:hover { background-size: 100% 2px; }
+.founder .bio { font: 400 13.5px/1.55 Arial, sans-serif; color: #131010; text-align: left; margin-top: 8px; }
+.founder .bio a { color: var(--cream); font-weight: 700; }
+.founder-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+
+.role-badge { display: inline-block; font: 700 10px Arial, sans-serif; letter-spacing: 1.4px; color: #131010; background: var(--green); padding: 4px 10px; border-radius: 99px; margin: 0; }
+
+.in-btn { display: inline-flex; align-items: center; gap: 7px; background: #131010; color: var(--cream); text-decoration: none; font: 700 12px Roboto, sans-serif; padding: 9px 14px; border-radius: 4px; transition: background .2s, transform .2s, box-shadow .2s; }
+.in-btn:hover { background: #0a66c2; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.3); }
+.in-btn.ghost { background: transparent; border: 1px solid #131010; color: #131010; }
+.in-btn.ghost:hover { background: #131010; color: var(--cream); }
+
+.sub-h { text-align: center; font: 400 14px "IBM Plex Mono", monospace; letter-spacing: 2px; text-transform: uppercase; color: #131010; margin: 0 auto 24px; max-width: 1000px; display: flex; align-items: center; gap: 16px; }
+.sub-h::before, .sub-h::after { content: ""; flex: 1; height: 1px; background: rgba(19,16,16,.35); }
+
+.partner-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 16px; align-items: stretch; }
+.partner-card { background: rgba(42,42,42,.35); border: 1px solid rgba(42,42,42,.55); padding: 28px 18px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.partner-card h3 { font: 700 19px/1.2 Roboto, sans-serif; margin-bottom: 10px; }
+.partner-card .in-btn { margin-top: 18px; }
+.partner-bio { background: var(--ink); color: var(--cream); padding: 26px 22px; display: flex; flex-direction: column; justify-content: center; gap: 18px; border-left: 3px solid var(--green); }
+.partner-bio p { font: 400 13.5px/1.6 Arial, sans-serif; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { font: 400 11px "IBM Plex Mono", monospace; border: 1px solid rgba(127,203,127,.6); color: var(--green); padding: 5px 10px; border-radius: 99px; transition: background .2s, color .2s; }
+.chips li:hover { background: var(--green); color: #131010; }
+
+@media (max-width: 860px) {
+  .partner-grid { grid-template-columns: 1fr 1fr; }
+  .partner-bio { grid-column: 1 / -1; }
+}
+@media (max-width: 620px) {
+  .founder { flex-direction: column; text-align: center; padding: 22px 16px; }
+  .founder-actions { justify-content: center; }
+  .partner-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .avatar, .avatar > img { animation: none; } }
+
+.partner-bio-text { font: 400 13px/1.55 Arial, sans-serif; color: #131010; margin: 14px 0 0; text-align: left; }
+.chips.skills { justify-content: center; margin-top: 12px; }
+.chips.skills li { color: #131010; border-color: rgba(19,16,16,.45); }
+.chips.skills li:hover { background: #131010; color: #fffaf8; }
+.partner-card .in-btn { margin-top: auto; }
+
+/* two-column consulting partners + OEM logo badges */
+.partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 940px; }
+@media (max-width: 760px) { .partner-grid { grid-template-columns: 1fr; } }
+
+.team > h2 { color: #131010; }

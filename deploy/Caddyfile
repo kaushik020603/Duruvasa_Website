@@ -1,0 +1,20 @@
+# Caddy terminates HTTPS (certificates are issued and renewed automatically) and forwards to the Node app.
+# Replace nothing here if the domain is www.duruvasa.com; DNS must already point at this VM's external IP.
+
+duruvasa.com {
+	redir https://www.duruvasa.com{uri} permanent
+}
+
+www.duruvasa.com {
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:4180 {
+		# the app reads these to know the real client IP and that the request was HTTPS
+		header_up X-Forwarded-Proto {scheme}
+	}
+	log {
+		output file /var/log/caddy/duruvasa.access.log {
+			roll_size 20mb
+			roll_keep 10
+		}
+	}
+}

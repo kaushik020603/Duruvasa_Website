@@ -1,0 +1,54 @@
+/* ================= footer (loaded last) ================= */
+.site-footer {
+  display: block; min-height: 0; padding: 0; color: rgba(255, 250, 248, .86);
+  background: linear-gradient(180deg, rgba(9, 12, 12, .9), rgba(9, 12, 12, .96)), var(--foot-bg) center / cover no-repeat, #0b0e0e;
+}
+.site-footer a { color: inherit; text-decoration: none; }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: block; font: inherit; }
+.site-footer p { text-align: left; font: inherit; margin: 0; }
+
+.foot-cta { max-width: 1160px; margin: 0 auto; padding: 56px 24px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.foot-cta h2 { font: 700 clamp(24px, 3.4vw, 34px)/1.15 Roboto, sans-serif; color: #fff; margin: 0 0 6px; }
+.foot-cta p { font: 400 16px/1.5 Arial, sans-serif; color: rgba(255, 250, 248, .75); }
+.foot-cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.foot-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 99px; font: 700 14.5px Roboto, sans-serif; border: 1.5px solid rgba(255, 255, 255, .4); color: #fff; transition: background .2s, border-color .2s, transform .2s; }
+.foot-btn:hover { background: rgba(255, 255, 255, .12); border-color: #fff; transform: translateY(-2px); }
+.foot-btn.primary { background: #7fcb7f; border-color: #7fcb7f; color: #0c1b14; }
+.foot-btn.primary:hover { background: #95dc95; border-color: #95dc95; }
+
+.foot-grid { max-width: 1160px; margin: 0 auto; padding: 48px 24px 36px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.35fr; gap: 40px; }
+.foot-grid h3 { font: 700 12.5px "IBM Plex Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #7fcb7f; margin: 0 0 16px; }
+.foot-grid li { margin-bottom: 11px; font: 400 15px/1.4 Arial, sans-serif; }
+.foot-grid a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+.foot-logo { display: inline-block; background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 18px; }
+.foot-logo img { height: 60px; width: auto; display: block; }
+.foot-brand p { font: 400 15px/1.6 Arial, sans-serif; color: rgba(255, 250, 248, .75); max-width: 300px; margin-bottom: 18px; }
+.foot-social { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .35); transition: background .2s, color .2s, border-color .2s; }
+.foot-social:hover { background: #0a66c2; border-color: #0a66c2; color: #fff; text-decoration: none; }
+
+.foot-contact li { display: flex; align-items: flex-start; gap: 11px; }
+.foot-contact svg { flex: none; margin-top: 2px; color: #7fcb7f; }
+.foot-contact small { display: block; font-size: 12px; opacity: .65; }
+.foot-link-btn { display: inline-block; margin-top: 4px; padding: 9px 16px; border-radius: 99px; background: rgba(127, 203, 127, .16); color: #b9f0b9 !important; font-weight: 700; }
+.foot-link-btn:hover { background: rgba(127, 203, 127, .3); text-decoration: none !important; }
+
+/* Bottom bar: keeps clear of the back-to-top arrow (right) and the WhatsApp bubble (left on desktop). */
+.foot-bottom { border-top: 1px solid rgba(255, 255, 255, .12); }
+.foot-bottom { max-width: 1160px; margin: 0 auto; padding: 20px 96px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px 28px; flex-wrap: wrap; }
+.foot-bottom p { font: 400 13.5px Arial, sans-serif; color: rgba(255, 250, 248, .7); }
+.foot-bottom ul { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 22px; }
+.foot-bottom li { margin: 0; font: 400 13.5px Arial, sans-serif; }
+.foot-bottom a { color: rgba(255, 250, 248, .8); }
+.foot-bottom a:hover { color: #fff; text-decoration: underline; }
+
+@media (max-width: 960px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 34px 28px; } .foot-brand { grid-column: 1 / -1; } .foot-brand p { max-width: 520px; } }
+@media (max-width: 560px) {
+  .foot-cta { padding: 44px 20px 30px; } .foot-grid { grid-template-columns: 1fr; padding: 36px 20px 18px; gap: 28px; }
+  .foot-bottom { padding: 18px 20px 24px; flex-direction: column; align-items: flex-start; }
+}
+@media (min-width: 761px) { .foot-bottom { padding-left: 90px; } } /* clear the desktop WhatsApp bubble */
+
+/* touch-friendly link targets (min 24px) */
+.foot-grid li a, .foot-bottom a { display: inline-block; padding: 4px 0; min-height: 24px; }
+.foot-bottom ul { gap: 2px 22px; }

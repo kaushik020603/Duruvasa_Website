@@ -1,0 +1,163 @@
+{
+  "site": {
+    "name": "DuRuVaSa CloudSec",
+    "description": "Top cybersecurity firm specializing in breach prevention and threat detection, with AI-driven defense and 24/7 monitoring.",
+    "email": "info@duruvasa.com",
+    "phone": "+919833445810",
+    "phoneLabel": "Rajeshkumar Chemalli",
+    "whatsapp": "+917506045810",
+    "whatsappMessage": "Hello DuRuVaSa CloudSec, I would like to know more about your cybersecurity services.",
+    "linkedin": "https://www.linkedin.com/in/rchemalli/",
+    "footerNote": "Cybersecurity consulting: threat detection, compliance and 24/7 monitoring."
+  },
+  "hero": {
+    "lineA": "Protecting Your",
+    "lineB": "Digital Future Today",
+    "words": [
+      "Breach Prevention",
+      "Threat Detection",
+      "24/7 Monitoring",
+      "AI-Driven Defense"
+    ],
+    "card": "Discover a top cybersecurity firm specializing in breach prevention and threat detection. We protect digital assets with AI and provide 24/7 monitoring and personalized service",
+    "cta": "Explore Now"
+  },
+  "about": {
+    "eyebrow": "About US",
+    "lead": "Cybersecurity consulting for the cloud era.",
+    "intro": "At DuRuVaSa, we specialize in providing top-notch cybersecurity consulting services designed to protect your organization from emerging threats. Our dedicated team of experts is committed to securing your digital landscape, ensuring compliance, and empowering your business with robust security measures.",
+    "paragraphs": [
+      "DuRuVaSa CloudSec was built on a simple idea: security should be an enabler, not an obstacle. We help organisations see what is happening across their cloud, understand which risks matter most, and respond in minutes instead of hours.",
+      "The firm is led by founder Rajeshkumar Chemalli, who brings more than 22 years of experience in information security and technology, together with consulting partners Sidhartha Chaudhry Rayala and Deekshith G N, who focus on information security and SOC operations."
+    ],
+    "stats": [
+      {
+        "label": "Years of experience",
+        "value": 22,
+        "suffix": "+"
+      },
+      {
+        "label": "Monitoring",
+        "value": 24,
+        "suffix": "/7"
+      },
+      {
+        "label": "Core advantages",
+        "value": 6,
+        "suffix": ""
+      },
+      {
+        "label": "Service pillars",
+        "value": 4,
+        "suffix": ""
+      }
+    ],
+    "pillars": [
+      {
+        "icon": "◎",
+        "title": "Our mission",
+        "text": "To protect organisations from emerging threats by pairing AI-driven detection with expert human judgement, so every business can operate in the cloud with confidence."
+      },
+      {
+        "icon": "◆",
+        "title": "Our approach",
+        "text": "We start from your size, industry and risk level, then design the controls, monitoring and compliance that fit. No one-size-fits-all packages, and no paying for what you do not need."
+      },
+      {
+        "icon": "✦",
+        "title": "Our commitment",
+        "text": "Round-the-clock monitoring, rapid response and audit-ready evidence, delivered with personalised service and plain-language communication."
+      }
+    ],
+    "values": [
+      {
+        "title": "Proactive",
+        "text": "We find and stop threats before they cause damage."
+      },
+      {
+        "title": "Transparent",
+        "text": "Clear controls, clear evidence and clear reporting."
+      },
+      {
+        "title": "Tailored",
+        "text": "Security shaped around your business, not a template."
+      },
+      {
+        "title": "Scalable",
+        "text": "Protection that grows with your apps, users and regions."
+      }
+    ]
+  },
+  "sections": {
+    "partners": {
+      "eyebrow": "Trusted ecosystem",
+      "heading": "OUR PARTNERS",
+      "sub": "We work alongside leading names in identity, AI security, analytics and security operations."
+    },
+    "team": {
+      "heading": "TEAM",
+      "partnersHeading": "Consulting Partners"
+    },
+    "advantages": {
+      "heading": "Advantages Of DuRuVaSa"
+    },
+    "offerings": {
+      "heading": "Our Offerings",
+      "sub": "Elevating Cybersecurity",
+      "intro": "We provide a comprehensive range of cybersecurity services, including breach prevention, compliance assurance, and 24/7 monitoring. Our solutions are designed to safeguard digital assets and ensure a proactive approach to cybersecurity."
+    },
+    "process": {
+      "eyebrow": "How we protect you",
+      "heading": "Detect. Monitor. Comply. Tailor."
+    },
+    "attributes": {
+      "eyebrow": "Key Atttibutes",
+      "heading": "Innovative Elements for Cyber Defense",
+      "text": "DuRuVaSa CloudSec is at the forefront of cybersecurity, dedicated to providing innovative solutions to protect digital assets and ensure compliance. Our team leverages AI for breach prevention and threat detection, offering tailored solutions for 24/7 monitoring.",
+      "cta": "Connect Now"
+    },
+    "quiz": {
+      "eyebrow": "2-minute self-check",
+      "heading": "How secure is your cloud?"
+    },
+    "resources": {
+      "eyebrow": "Free resource",
+      "heading": "Get the Cloud Security Checklist"
+    },
+    "contact": {
+      "heading": "Contact us",
+      "emailNote": "Prefer email? Write to"
+    }
+  },
+  "legal": [
+    {
+      "slug": "privacy-policy",
+      "title": "Privacy Policy",
+      "body": "This page is a placeholder. Replace it with your final privacy policy from the admin panel (Content, then Legal pages).\n\nWe only use the details you submit through our forms to respond to you and to send any resource you request."
+    },
+    {
+      "slug": "accessibility-statement",
+      "title": "Accessibility Statement",
+      "body": "This page is a placeholder. Replace it with your final accessibility statement from the admin panel (Content, then Legal pages)."
+    },
+    {
+      "slug": "terms-and-conditions",
+      "title": "Terms & Conditions",
+      "body": "This page is a placeholder. Replace it with your final terms and conditions from the admin panel (Content, then Legal pages)."
+    }
+  ],
+  "resources": [
+    {
+      "slug": "cloud-security-checklist",
+      "title": "Cloud Security Checklist",
+      "description": "A practical 3-page checklist covering identity, data, monitoring, backups, incident response and compliance, with a 30-day quick-win plan.",
+      "bullets": [
+        "Identity and access essentials",
+        "Logging and monitoring basics",
+        "Backup and recovery tests",
+        "A 30-day quick-win plan"
+      ],
+      "fileName": "Cloud-Security-Checklist.pdf"
+    }
+  ]
+}

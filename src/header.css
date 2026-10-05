@@ -1,0 +1,68 @@
+/* ================= site header (loaded last, overrides earlier rules) ================= */
+:root { --hdr: 84px; }
+.site-header {
+  height: var(--hdr); padding: 0 clamp(16px, 3.2vw, 44px); gap: 20px; display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255, 255, 255, .95); backdrop-filter: saturate(1.5) blur(12px); -webkit-backdrop-filter: saturate(1.5) blur(12px);
+  border-bottom: 1px solid rgba(19, 16, 16, .07); box-shadow: none; transition: height .25s ease, box-shadow .25s ease;
+}
+.site-header.scrolled { height: 68px; background: rgba(255, 255, 255, .97); box-shadow: 0 8px 28px rgba(16, 24, 40, .12); }
+
+.logo { display: flex; align-items: center; flex: none; padding: 4px 0; }
+.site-header .logo img { height: 64px; width: auto; max-width: none; transition: height .25s ease, transform .35s ease; }
+.site-header.scrolled .logo img { height: 50px; }
+.logo:hover img { transform: scale(1.04); }
+
+.site-header nav { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.site-header nav a {
+  position: relative; padding: 10px 14px; border-radius: 99px; text-decoration: none;
+  font: 500 15px/1 Roboto, "Segoe UI", system-ui, sans-serif; color: #1d2230; white-space: nowrap;
+  transition: background .2s, color .2s;
+}
+.site-header nav a::after { display: none; }
+.site-header nav a:hover { background: rgba(19, 16, 16, .06); }
+.site-header nav a.active { background: rgba(47, 158, 87, .13); color: #1b6a3a; font-weight: 700; }
+.site-header nav a.nav-cta {
+  margin-left: 10px; padding: 12px 20px; background: #131010; color: #fff; font-weight: 700;
+  box-shadow: 0 4px 14px rgba(19, 16, 16, .25); transition: background .2s, transform .2s, box-shadow .2s;
+}
+.site-header nav a.nav-cta:hover { background: #2f9e57; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(47, 158, 87, .35); }
+
+.site-header nav .tools { display: inline-flex; align-items: center; gap: 8px; margin-left: 14px; padding-left: 14px; border-left: 1px solid rgba(19, 16, 16, .12); }
+.lang select { height: 36px; padding: 0 10px; border-radius: 99px; border: 1px solid rgba(19, 16, 16, .18); background: #fff; color: #1d2230; font: 500 13px Roboto, sans-serif; cursor: pointer; }
+.theme-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(19, 16, 16, .18); background: #fff; color: #1d2230; font-size: 16px; cursor: pointer; transition: background .2s, transform .3s; }
+.theme-btn:hover { background: #f1f3f6; transform: rotate(25deg); }
+
+.burger { display: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(19, 16, 16, .14); background: #fff; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; }
+.burger span { display: block; width: 20px; height: 2px; background: #1d2230; border-radius: 2px; transition: transform .25s, opacity .2s; }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 1060px) {
+  .site-header nav a { padding: 10px 10px; font-size: 14px; }
+  .site-header nav a.nav-cta { padding: 11px 16px; }
+}
+@media (max-width: 960px) {
+  .site-header { height: 72px; }
+  .site-header.scrolled { height: 64px; }
+  .site-header .logo img { height: 52px; }
+  .site-header.scrolled .logo img { height: 46px; }
+  .burger { display: flex; margin-left: auto; }
+  .site-header nav {
+    display: none; position: absolute; top: 100%; left: 0; right: 0; margin: 0; flex-direction: column; align-items: stretch; gap: 2px;
+    padding: 12px 16px 18px; background: #fff; border-bottom: 1px solid rgba(19, 16, 16, .1); box-shadow: 0 20px 40px rgba(16, 24, 40, .18);
+    max-height: calc(100vh - 72px); overflow-y: auto;
+  }
+  .site-header nav.open { display: flex; animation: menuIn .2s ease; }
+  .site-header nav a { padding: 14px 14px; font-size: 16px; border-radius: 10px; }
+  .site-header nav a.nav-cta { margin: 8px 0 0; text-align: center; padding: 15px; }
+  .site-header nav .tools { margin: 10px 0 0; padding: 12px 0 0; border-left: 0; border-top: 1px solid rgba(19, 16, 16, .1); justify-content: space-between; }
+}
+@keyframes menuIn { from { opacity: 0; transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .site-header, .site-header .logo img { transition: none; } .site-header nav.open { animation: none; } }
+
+/* keep anchored sections clear of the sticky header */
+html { scroll-padding-top: 76px; }
+
+/* Slide-in animations start a little off-screen; clip them so they never widen the page (no sideways scroll on phones). */
+main { overflow-x: clip; }

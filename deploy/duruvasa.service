@@ -1,0 +1,31 @@
+[Unit]
+Description=DuRuVaSa CloudSec website and admin
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=duruvasa
+Group=duruvasa
+WorkingDirectory=/opt/duruvasa
+EnvironmentFile=/etc/duruvasa.env
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning server-dist/server/index.js
+Restart=always
+RestartSec=3
+
+# Hardening: the app can only write to its own data directory.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+ReadWritePaths=/var/lib/duruvasa
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,204 @@
+{
+  "partners": [
+    {
+      "name": "DC Infotech",
+      "src": "/img/p-dc.webp",
+      "url": "https://www.dcinfotech.com",
+      "color": "#28b0fe",
+      "tagline": "IT & security distribution",
+      "published": true
+    },
+    {
+      "name": "Acuity Knowledge Partners",
+      "src": "/img/p-acuity.webp",
+      "url": "https://www.acuitykp.com",
+      "color": "#143b8c",
+      "tagline": "Research, analytics & technology",
+      "published": true
+    },
+    {
+      "name": "Cross Identity",
+      "src": "/img/p-cross.webp",
+      "url": "https://crossidentity.com",
+      "color": "#fd551c",
+      "tagline": "Converged identity & access management",
+      "published": true
+    },
+    {
+      "name": "RaieNox.ai Academy",
+      "src": "/img/p-raienox.webp",
+      "url": "https://raienox.ai",
+      "color": "#5693c3",
+      "tagline": "AI security & zero trust advisory",
+      "published": true
+    },
+    {
+      "name": "Trench",
+      "src": "/img/p-trench.webp",
+      "url": "https://www.trenchsecurity.ai",
+      "color": "#0747e6",
+      "tagline": "AI-native SIEM & SecOps",
+      "published": true
+    },
+    {
+      "name": "Aurascape",
+      "src": "/img/p-aurascape.webp",
+      "url": "https://aurascape.ai",
+      "color": "#e7462b",
+      "tagline": "AI security platform",
+      "published": true
+    }
+  ],
+  "team": [
+    {
+      "name": "Rajeshkumar Chemalli",
+      "role": "FOUNDER & CEO",
+      "photo": "/team/rajesh.webp",
+      "linkedin": "https://www.linkedin.com/in/rchemalli/",
+      "bio": "Rajeshkumar Chemalli is a seasoned cybersecurity entrepreneur, industry thought leader, and technical strategist with over 22 years of extensive experience in the information security and technology domains. Currently serving as the Head of Technical Services at DC Infotech & Communication Limited, as well as driving growth through his entrepreneurial venture with Durvasa CloudSec, Rajeshkumar specializes in integrating advanced AI and automation into modern security infrastructures. Beyond his technical acumen, he is a dedicated mentor and speaker who frequently shares his insights on leadership, continuous personal growth, and building resilient mindsets at key institutional conclaves and management forums. His career is defined by a commitment to helping organizations secure their digital landscapes while empowering the next generation of professionals to bridge the gap between academia and industry demands.\n\nFor a deeper look into his philosophy on leadership and career growth, you can watch the Rajeshkumar Chemalli ISME Session, which showcases his approach to building long-term career success and overcoming complex industry challenges.",
+      "featured": true,
+      "linkLabel": "Rajeshkumar Chemalli ISME Session",
+      "linkUrl": "https://www.youtube.com/watch?v=jJ2v2ukFFWE",
+      "skills": [],
+      "certs": []
+    },
+    {
+      "name": "Sidhartha Chaudhry Rayala",
+      "role": "CONSULTING PARTNER",
+      "photo": "/team/sidhartha.webp",
+      "linkedin": "https://www.linkedin.com/in/sidhartha-r-a5290524b/",
+      "bio": "Sidhartha Chaudhry Rayala is a Consulting Partner at DuRuVaSa CloudSec focused on information security and SOC operations. A recent graduate of GITAM University, Bengaluru, he brings a hands-on, detail-oriented approach to security monitoring, alert triage and incident response. Certified across Zscaler, Fortinet and Palo Alto Networks, he helps organisations turn raw security telemetry into clear, actionable decisions and a stronger day-to-day security posture.",
+      "skills": [
+        "SOC Operations",
+        "Incident Triage",
+        "Security Monitoring",
+        "Zero Trust"
+      ],
+      "certs": [
+        {
+          "vendor": "Zscaler",
+          "color": "#236bf5",
+          "logo": "/img/oem/zscaler-symbol.svg"
+        },
+        {
+          "vendor": "Fortinet",
+          "color": "#ee3124",
+          "logo": "/img/oem/fortinet.svg"
+        },
+        {
+          "vendor": "Palo Alto Networks",
+          "color": "#f04e23",
+          "logo": "/img/oem/paloalto.svg"
+        }
+      ],
+      "featured": false,
+      "linkLabel": "",
+      "linkUrl": ""
+    },
+    {
+      "name": "Deekshith G N",
+      "role": "CONSULTING PARTNER",
+      "photo": "/team/deekshith.webp",
+      "linkedin": "https://www.linkedin.com/in/deekshith-g-n-0b7b73317/",
+      "bio": "Deekshith G N is a Consulting Partner at DuRuVaSa CloudSec, working across information security and SOC operations. A GITAM University (Bengaluru) graduate, he is driven by the belief that securing organisations is a way of creating real impact on society. With certifications from Fortinet, Palo Alto Networks and Zscaler, he concentrates on network and cloud security controls, threat visibility and helping teams respond with confidence when something looks wrong.",
+      "skills": [
+        "Network Security",
+        "Cloud Security",
+        "Threat Visibility",
+        "Firewalls"
+      ],
+      "certs": [
+        {
+          "vendor": "Zscaler",
+          "color": "#236bf5",
+          "logo": "/img/oem/zscaler-symbol.svg"
+        },
+        {
+          "vendor": "Fortinet",
+          "color": "#ee3124",
+          "logo": "/img/oem/fortinet.svg"
+        },
+        {
+          "vendor": "Palo Alto Networks",
+          "color": "#f04e23",
+          "logo": "/img/oem/paloalto.svg"
+        }
+      ],
+      "featured": false,
+      "linkLabel": "",
+      "linkUrl": ""
+    }
+  ],
+  "advantages": [
+    {
+      "title": "1. AI-Driven Threat Detection",
+      "text": "We use advanced AI and machine learning to spot unusual behavior in real time, so threats are identified and stopped before they cause damage."
+    },
+    {
+      "title": "2. End-to-End Cloud Security",
+      "text": "From identity and access management to data protection, monitoring, and incident response, we secure every layer of your cloud environment."
+    },
+    {
+      "title": "3. Tailored Security for Your Business",
+      "text": "Every organization is different. We design security strategies that match your size, industry, and risk level instead of using one-size-fits-all solutions."
+    },
+    {
+      "title": "4. Continuous Monitoring & Rapid Response",
+      "text": "Our systems watch over your cloud 24/7, alerting you to suspicious activity and helping you respond quickly to reduce downtime and impact."
+    },
+    {
+      "title": "5. Compliance & Governance Support",
+      "text": "We help you meet key security and privacy standards, making audits easier and reducing the risk of fines or legal issues."
+    },
+    {
+      "title": "6. Scalable & Future-Ready",
+      "text": "As your business grows, our security scales with you—supporting new apps, users, and regions without slowing you down."
+    }
+  ],
+  "offerings": [
+    {
+      "title": "Threat Detection",
+      "icon": "spark",
+      "slug": "threat-detection",
+      "text": "Threat detection in cybersecurity is about spotting danger before it becomes disaster—continuously watching your networks, systems, and cloud for suspicious behavior, using AI and expert insight to flag real attacks fast, and giving you the power to respond in minutes instead of hours so your data, customers, and reputation stay protected."
+    },
+    {
+      "title": "Compliance Management",
+      "icon": "dropbox",
+      "slug": "compliance-management",
+      "text": "Compliance management is about turning complex regulations into a strategic advantage—building controls, policies, and audit-ready evidence into your cloud so you always know where sensitive data lives, who can access it, and how it’s protected. With the right framework in place, you don’t just avoid fines and breaches; you prove to customers, partners, and regulators that your security is disciplined, transparent, and trustworthy."
+    },
+    {
+      "title": "Continuous Monitoring",
+      "icon": "gear",
+      "slug": "continuous-monitoring",
+      "text": "Continuous monitoring means your security never sleeps—every login, configuration change, and data flow in your cloud is watched in real time, so risky behavior is flagged instantly, blind spots are eliminated, and small issues are contained before they become full-scale incidents that threaten your business."
+    },
+    {
+      "title": "Tailored Solutions",
+      "icon": "ring",
+      "slug": "tailored-solutions",
+      "text": "Tailored solutions mean your security is built around your business, not the other way around—aligning controls, policies, and technology with your unique cloud architecture, risk profile, and growth plans so you close the gaps that matter most, avoid paying for what you don’t need, and give every stakeholder confidence that protection is precise, efficient, and built to scale."
+    }
+  ],
+  "attributes": [
+    {
+      "title": "Real-time Threat Detection",
+      "text": "Real-time threat detection means your defenses react the moment danger appears—continuously scanning your cloud, endpoints, and network traffic for suspicious behavior, using AI to cut through the noise, and surfacing only the attacks that matter so you can shut them down in seconds, not hours."
+    },
+    {
+      "title": "Compliance Management",
+      "text": "Compliance management turns complex regulations into a powerful shield for your business—building clear controls, audit-ready proof, and full visibility into who touches your data, where it lives, and how it’s protected, so you avoid fines and breaches while proving to customers and regulators that your security is disciplined, transparent, and trustworthy."
+    },
+    {
+      "title": "Tailored Security Solutions",
+      "text": "Compliance management keeps your cloud one step ahead of regulators—translating complex standards into clear controls, live visibility, and audit-ready proof so you always know where sensitive data lives, who can touch it, and how it’s protected, turning a major risk into a powerful trust signal for your customers."
+    },
+    {
+      "title": "AI-driven Defense",
+      "text": "AI-driven defense turns your security into a living, learning system—analyzing billions of signals across your cloud in real time, spotting patterns humans miss, and automatically surfacing the most dangerous threats so you can move first, shut attacks down fast, and keep your business one step ahead of cybercriminals."
+    }
+  ],
+  "testimonials": [],
+  "badges": []
+}

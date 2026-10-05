@@ -1,0 +1,50 @@
+name: Post-deploy audit
+
+# Runs against the LIVE site: after you deploy (run it by hand), and weekly to catch drift
+# such as an expired certificate, a changed proxy config, or a performance regression.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Site URL to audit
+        default: https://www.duruvasa.com
+  schedule:
+    - cron: "17 3 * * 1"
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ github.event.inputs.url || 'https://www.duruvasa.com' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Security headers, admin lock-down, HTTPS redirect
+        run: node scripts/check-headers.mjs "$SITE_URL"
+
+      - name: TLS certificate has at least 14 days left
+        run: |
+          host=$(echo "$SITE_URL" | sed -E 's#https?://([^/]+).*#\1#')
+          end=$(echo | openssl s_client -servername "$host" -connect "$host:443" 2>/dev/null | openssl x509 -noout -enddate | cut -d= -f2)
+          days=$(( ( $(date -d "$end" +%s) - $(date +%s) ) / 86400 ))
+          echo "Certificate for $host expires in $days days"
+          test "$days" -ge 14
+
+      - name: Lighthouse (performance, accessibility, best practices, SEO)
+        run: |
+          npx lhci autorun --config=lighthouserc.json \
+            --collect.url="$SITE_URL/" \
+            --collect.url="$SITE_URL/services/threat-detection" \
+            --collect.url="$SITE_URL/insights" \
+            --assert.assertions.is-on-https=error
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse
+          path: .lighthouseci

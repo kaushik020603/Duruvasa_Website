@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "slug": "cloud-security-basics-for-growing-teams",
+      "title": "Cloud security basics for growing teams",
+      "date": "2026-09-15",
+      "readMins": 3,
+      "excerpt": "Five foundations that reduce the most risk for the least effort when your cloud footprint starts to grow.",
+      "body": "## Start with identity\n\nMost cloud incidents begin with a compromised account. Enforce **multi-factor authentication** everywhere, remove shared accounts, and give people only the access their role needs.\n\n## Know what you have\n\nYou cannot protect assets you cannot see. Keep an inventory of accounts, storage, databases and public endpoints, and review it regularly.\n\n## Encrypt and back up\n\n- Encrypt data at rest and in transit\n- Keep backups separate from production credentials\n- Test restores, not just backups\n\n## Log everything that matters\n\nTurn on audit logging for logins, configuration changes and data access, and send the logs somewhere an attacker cannot easily erase.\n\n## Plan for the bad day\n\nWrite down who decides, who acts and who communicates when something goes wrong. A short, practised plan beats a long, unread one.\n\nIf you want help prioritising these for your own environment, [get in touch](/#contact)."
+    },
+    {
+      "slug": "how-ai-improves-threat-detection",
+      "title": "How AI improves threat detection",
+      "date": "2026-09-22",
+      "readMins": 3,
+      "excerpt": "Why machine learning helps analysts find real attacks in a sea of events, and where human judgement still matters.",
+      "body": "## The volume problem\n\nA modern cloud environment produces millions of events a day. No team can read them all, and rule-only detection either misses new behavior or drowns analysts in alerts.\n\n## What AI adds\n\n- **Baselines:** models learn what normal looks like for each user and workload\n- **Anomaly spotting:** unusual locations, volumes or sequences stand out\n- **Prioritisation:** related events are grouped and ranked by risk\n\n## What it does not replace\n\nAI is a force multiplier, not a substitute for analysts. People validate alerts, understand business context and decide how to respond.\n\n## Practical tips\n\n1. Feed models good, complete logs\n2. Tune against your own environment\n3. Review outcomes and feed lessons back in\n\nOur [Threat Detection](/services/threat-detection) service combines both approaches."
+    },
+    {
+      "slug": "making-compliance-audit-ready",
+      "title": "Making compliance audit-ready all year",
+      "date": "2026-09-29",
+      "readMins": 3,
+      "excerpt": "Shift from a yearly scramble to continuous evidence so audits become routine.",
+      "body": "## Why audits feel painful\n\nEvidence is gathered at the last minute from many people and systems. The fix is to collect it as part of normal work.\n\n## Build it in\n\n- Map each control to an **owner** and a **source of evidence**\n- Automate evidence capture where you can, such as access reviews and configuration snapshots\n- Keep policies short, current and easy to find\n\n## Know your data\n\nAuditors and customers will ask where sensitive data lives, who can access it and how it is protected. Maintain a simple data map and update it when systems change.\n\n## Review on a schedule\n\nQuarterly check-ins catch drift early and keep ownership clear.\n\nSee how [Compliance Management](/services/compliance-management) can support this."
+    }
+  ]
+}
