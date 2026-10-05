@@ -1,8 +1,8 @@
 node_modules
 dist
 server-dist
-data
-.e2e-data
+/data
+/.e2e-data
 .env
 .env.*
 !.env.example
