@@ -3,7 +3,9 @@ import { renderMarkdown } from "./markdown";
 import { parseRoute } from "./router";
 import { questions, scoreQuiz } from "./quiz";
 import { buildIcs, nextWeekdays, validate } from "./validate";
-import { translate } from "./i18n";
+import { lp, setI18n, translate } from "./i18n";
+import { prefixPath, splitLang } from "../../shared/langs";
+import { localize } from "../../shared/localize";
 import { posts, services } from "../data/content";
 
 describe("parseRoute", () => {
@@ -74,11 +76,62 @@ describe("scheduler helpers", () => {
 });
 
 describe("i18n", () => {
-  it("translates and falls back to English", () => {
-    expect(translate("hi", "nav.home", "Home")).not.toBe("Home");
-    expect(translate("kn", "nav.home", "Home")).not.toBe("Home");
-    expect(translate("hi", "missing.key", "Fallback")).toBe("Fallback");
-    expect(translate("en", "nav.home", "Home")).toBe("Home");
+  it("translates with placeholders and falls back to English", () => {
+    setI18n("hi", { "nav.home": "होम", "off.moreAbout": "{title} के बारे में" });
+    expect(translate("nav.home", "Home")).toBe("होम");
+    expect(translate("missing.key", "Fallback")).toBe("Fallback");
+    expect(translate("off.moreAbout", "about {title}", { title: "X" })).toBe("X के बारे में");
+    expect(translate("other", "Hello {name}", { name: "Asha" })).toBe("Hello Asha");
+    expect(lp("/services/x")).toBe("/hi/services/x");
+    setI18n("en", {});
+    expect(lp("/services/x")).toBe("/services/x");
+  });
+
+  it("splits and builds language prefixes", () => {
+    expect(splitLang("/hi/services/x")).toEqual({ lang: "hi", rest: "/services/x", prefixed: true });
+    expect(splitLang("/ta")).toEqual({ lang: "ta", rest: "/", prefixed: true });
+    expect(splitLang("/services/x").lang).toBe("en");
+    expect(splitLang("/en/x").prefixed).toBe(false); // English is never prefixed
+    expect(splitLang("/hindi").lang).toBe("en");
+    expect(prefixPath("/", "gu")).toBe("/gu");
+    expect(prefixPath("/#contact", "gu")).toBe("/gu#contact");
+    expect(prefixPath("/insights", "en")).toBe("/insights");
+    expect(prefixPath("https://x.com/a", "hi")).toBe("https://x.com/a");
+  });
+
+  it("routes language-prefixed paths", () => {
+    expect(parseRoute("/hi")).toEqual({ name: "home" });
+    expect(parseRoute("/ml/insights")).toEqual({ name: "insights" });
+    expect(parseRoute(`/kn/services/${services[0].slug}`)).toEqual({ name: "service", slug: services[0].slug });
+    expect(parseRoute("/hi/nope")).toEqual({ name: "notfound" });
+  });
+});
+
+describe("localize", () => {
+  const base = {
+    hero: { lineA: "A", words: ["x", "y"] },
+    services: [{ slug: "s1", title: "T", faqs: [{ q: "q1", a: "a1" }, { q: "q2", a: "a2" }] }],
+    advantages: [{ title: "t1", text: "x1" }, { title: "t2", text: "x2" }],
+    team: [{ name: "Ann", role: "R" }],
+  };
+  it("merges translations by slug, name and position", () => {
+    const out = localize(base, {
+      ui: { k: "v" }, hero: { lineA: "Z" },
+      services: { s1: { title: "TT", faqs: [{ q: "Q1", a: "A1" }, { q: "Q2", a: "A2" }] } },
+      advantages: [{ title: "T1" }, { title: "T2" }], team: { Ann: { role: "RR" } },
+    });
+    expect(out.hero).toEqual({ lineA: "Z", words: ["x", "y"] });
+    expect(out.services[0].title).toBe("TT");
+    expect(out.services[0].faqs[1]).toEqual({ q: "Q2", a: "A2" });
+    expect(out.advantages[1]).toEqual({ title: "T2", text: "x2" });
+    expect(out.team[0].role).toBe("RR");
+    expect(out.ui).toEqual({ k: "v" });
+  });
+  it("keeps English where the English list changed length, and without a translation", () => {
+    const out = localize(base, { hero: { words: ["only one"] }, advantages: [{ title: "T1" }] });
+    expect(out.hero.words).toEqual(["x", "y"]);
+    expect(out.advantages[0].title).toBe("t1");
+    expect(localize(base, undefined).hero).toEqual(base.hero);
   });
 });
 

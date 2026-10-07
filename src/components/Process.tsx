@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { sections, services } from "../data/content";
+import { lp } from "../lib/i18n";
+import { usePrefs } from "../lib/prefs";
 
 const ORDER = ["threat-detection", "continuous-monitoring", "compliance-management", "tailored-solutions"];
 const VERB: Record<string, string> = {
@@ -11,6 +13,7 @@ const VERB: Record<string, string> = {
 
 /** Scroll-driven timeline: the line fills and each step lights up as you reach it. */
 export default function Process() {
+  const { t } = usePrefs();
   const root = useRef<HTMLOListElement>(null);
   const [fill, setFill] = useState(0);
   const [active, setActive] = useState(-1);
@@ -45,10 +48,10 @@ export default function Process() {
           <li key={s.slug} className={i <= active ? "on" : ""}>
             <span className="node" aria-hidden="true">{i + 1}</span>
             <div className="step-card reveal">
-              <h3>{VERB[s.slug] ?? s.title}</h3>
+              <h3>{t(`process.${s.slug}`, VERB[s.slug] ?? s.title)}</h3>
               <p className="tag">{s.title}</p>
               <p>{s.intro}</p>
-              <a href={`/services/${s.slug}`} data-route>Explore {s.title} →</a>
+              <a href={lp(`/services/${s.slug}`)} data-route>{t("process.explore", "Explore {title}", { title: s.title })} →</a>
             </div>
           </li>
         ))}

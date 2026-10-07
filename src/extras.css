@@ -32,6 +32,8 @@ main:focus { outline: none; }
 /* ================= loader ================= */
 .loader { position: fixed; inset: 0; z-index: 500; background: #131010; display: grid; place-items: center; transition: opacity .5s, visibility .5s; }
 .loader.leaving { opacity: 0; visibility: hidden; }
+html[data-intro="skip"] .loader { display: none; }
+@media (prefers-reduced-motion: reduce) { .loader { display: none; } }
 .loader-in { display: grid; place-items: center; gap: 12px; color: #fffaf8; font: 400 13px "IBM Plex Mono", monospace; letter-spacing: 2px; }
 .loader-in img { background: #fffaf8; padding: 4px; border-radius: 4px; animation: pop .6s .5s both; }
 .loader-in p { margin: 0; animation: pop .6s .8s both; }
@@ -157,3 +159,8 @@ main:focus { outline: none; }
 .legal { min-height: 60vh; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .legal a { color: #7fcb7f; }
 @media (prefers-reduced-motion: reduce) { .loader { display: none; } .quiz fieldset { animation: none; } }
+
+/* home FAQ */
+.home-faq { max-width: 860px; margin: 0 auto; padding: 70px 20px 40px; color: var(--on); }
+.home-faq h2 { font: 700 clamp(26px, 4vw, 36px)/1.15 Roboto, sans-serif; margin: 0 0 18px; }
+.home-faq .faq-item p { font: 400 16px/1.65 Arial, sans-serif; }

@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "seo": "node scripts/seo.mjs",
-    "prebuild": "npm run seo",
-    "build": "tsc && vite build && tsc -p server",
+    "build": "tsc && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && tsc -p server",
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc && tsc -p server --noEmit",

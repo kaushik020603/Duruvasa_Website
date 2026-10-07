@@ -1,6 +1,7 @@
 node_modules
 dist
 server-dist
+dist-ssr
 /data
 /.e2e-data
 .env

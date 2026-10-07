@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { oemLogo, sections, team, type Member } from "../data/content";
 import { usePrefs } from "../lib/prefs";
+import { translate } from "../lib/i18n";
 
 const LinkedIn = () => (
   <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
@@ -21,13 +22,13 @@ function Photo({ m, cls = "" }: { m: Member; cls?: string }) {
 function Certs({ m }: { m: Member }) {
   if (!m.certs?.length) return null;
   return (
-    <ul className="certs" aria-label="Certifications">
+    <ul className="certs" aria-label={translate("team.certs", "Certifications")}>
       {m.certs.map((c) => {
         const logo = oemLogo(c.vendor, c.logo);
         return (
           <li key={c.vendor} style={{ ["--c" as string]: c.color } as CSSProperties}>
             {logo ? <img className="oem" src={logo} alt="" width={26} height={26} loading="lazy" /> : <i aria-hidden="true">{c.vendor[0]}</i>}
-            <span><b>{c.vendor}</b><small>Certified</small></span>
+            <span><b>{c.vendor}</b><small>{translate("team.certified", "Certified")}</small></span>
           </li>
         );
       })}
@@ -46,7 +47,7 @@ function Partner({ m }: { m: Member }) {
       {!!m.skills?.length && <ul className="chips skills">{m.skills.map((s) => <li key={s}>{s}</li>)}</ul>}
       {m.linkedin && (
         <a className="in-btn" href={m.linkedin} target="_blank" rel="noopener noreferrer">
-          <LinkedIn /> Connect on LinkedIn
+          <LinkedIn /> {translate("team.connect", "Connect on LinkedIn")}
         </a>
       )}
     </article>
@@ -68,7 +69,7 @@ function Founder({ m }: { m: Member }) {
             <a className="in-btn" href={m.linkedin} target="_blank" rel="noopener noreferrer"><LinkedIn /> LinkedIn</a>
           )}
           {m.linkUrl && (
-            <a className="in-btn ghost" href={m.linkUrl} target="_blank" rel="noopener noreferrer">▶ {m.linkLabel || "Learn more"}</a>
+            <a className="in-btn ghost" href={m.linkUrl} target="_blank" rel="noopener noreferrer">▶ {m.linkLabel || translate("off.more", "Learn more")}</a>
           )}
         </div>
       </div>

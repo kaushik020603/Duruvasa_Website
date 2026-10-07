@@ -67,7 +67,7 @@ export default function Hero() {
           <a className="btn-dark magnetic" href="#services-list">{t("hero.cta", hero.cta)}</a>
         </div>
       </div>
-      <a className="scroll-cue" href="#about" aria-label="Scroll down"><span /></a>
+      <a className="scroll-cue" href="#about" aria-label={t("hero.scroll", "Scroll down")}><span /></a>
     </section>
   );
 }

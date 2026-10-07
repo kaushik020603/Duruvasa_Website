@@ -1,4 +1,5 @@
 import { prettyPhone, siteInfo } from "../data/content";
+import { usePrefs } from "../lib/prefs";
 
 const digits = (p: string) => p.replace(/[^\d]/g, "");
 
@@ -15,20 +16,21 @@ const WhatsApp = () => (
 
 /** Mobile: sticky Call + WhatsApp bar. Desktop: a single WhatsApp bubble. Numbers come from Site settings in the CMS. */
 export default function ContactFab() {
+  const { t } = usePrefs();
   const { phone, phoneLabel, whatsapp, whatsappMessage } = siteInfo;
   if (!phone && !whatsapp) return null;
   const wa = whatsapp ? `https://wa.me/${digits(whatsapp)}?text=${encodeURIComponent(whatsappMessage || "")}` : "";
 
   return (
-    <div className="fab" role="group" aria-label="Contact us quickly">
+    <div className="fab" role="group" aria-label={t("fab.label", "Contact us quickly")}>
       {phone && (
-        <a className="fab-call" href={`tel:${phone}`} aria-label={`Call now: ${phoneLabel ? `${phoneLabel}, ` : ""}${prettyPhone(phone)}`}>
-          <Phone /><span>Call now</span>
+        <a className="fab-call" href={`tel:${phone}`} aria-label={`${t("fab.call", "Call now")}: ${phoneLabel ? `${phoneLabel}, ` : ""}${prettyPhone(phone)}`}>
+          <Phone /><span>{t("fab.call", "Call now")}</span>
         </a>
       )}
       {wa && (
-        <a className="fab-wa" href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp (opens in a new tab)">
-          <WhatsApp /><span>WhatsApp</span>
+        <a className="fab-wa" href={wa} target="_blank" rel="noopener noreferrer" aria-label={t("fab.waLabel", "Chat with us on WhatsApp (opens in a new tab)")}>
+          <WhatsApp /><span>{t("fab.wa", "WhatsApp")}</span>
         </a>
       )}
     </div>

@@ -120,7 +120,7 @@ describe("SEO, AEO and GEO", () => {
   const page = async (p: string) => { const r = await fetch(base + p, { redirect: "manual" }); return { r, html: await r.text() }; };
   const ld = (html: string) => [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
 
-  it("renders per-page head tags and a crawlable body without JavaScript", async () => {
+  it("server-renders each page with its own head tags, content and hreflang alternates", async () => {
     const { r, html } = await page("/services/threat-detection");
     expect(r.status).toBe(200);
     expect(html).toContain("<title>Threat Detection | DuRuVaSa CloudSec</title>");
@@ -128,18 +128,27 @@ describe("SEO, AEO and GEO", () => {
     expect(html).toContain('<meta name="twitter:title"');
     expect(html.match(/<title>/g)).toHaveLength(1);
     expect(html.match(/name="description"/g)).toHaveLength(1);
-    expect(html).toMatch(/<div id="root"><div class="ssr">[\s\S]*<h1>Threat Detection<\/h1>/);
+    // Real server-side rendering of the React app, plus the content it used so the browser can hydrate.
+    expect(html).toContain("<h1>Threat Detection</h1>");
+    expect(html).toContain('id="__DATA__"');
+    expect(html).toContain('<html lang="en" dir="ltr"');
+    expect(html.match(/rel="alternate" hreflang="/g)).toHaveLength(10); // nine languages + x-default
+    expect(html).toContain('hreflang="x-default" href="https://www.duruvasa.com/services/threat-detection"');
+    expect(html).toContain('hreflang="hi" href="https://www.duruvasa.com/hi/services/threat-detection"');
     const types = ld(html).map((x) => x["@type"]);
     expect(types).toEqual(["Service", "FAQPage", "BreadcrumbList"]);
   });
 
   it("describes the organisation, team and site on the home page", async () => {
     const { html } = await page("/");
-    expect(html).toContain("<h1>Protecting Your Digital Future Today</h1>");
-    const graph = ld(html)[0]["@graph"] as { "@type": string | string[] }[];
-    const kinds = graph.map((n) => (Array.isArray(n["@type"]) ? n["@type"][0] : n["@type"]));
+    expect(html).toContain('aria-label="Protecting Your Digital Future Today"');
+    expect(html).toContain("Frequently asked questions"); // home FAQ section
+    const [graph, faq] = ld(html);
+    const kinds = (graph["@graph"] as { "@type": string | string[] }[]).map((n) => (Array.isArray(n["@type"]) ? n["@type"][0] : n["@type"]));
     expect(kinds).toEqual(expect.arrayContaining(["Organization", "Person", "WebSite", "WebPage"]));
     expect(kinds.filter((k) => k === "Person")).toHaveLength(3);
+    expect(faq["@type"]).toBe("FAQPage");
+    expect(faq.mainEntity.length).toBeGreaterThanOrEqual(8);
   });
 
   it("marks articles up as BlogPosting and keeps JSON-LD safe inside the page", async () => {
@@ -176,6 +185,54 @@ describe("SEO, AEO and GEO", () => {
     expect((await (await fetch(base + "/llms-full.txt")).text()).length).toBeGreaterThan(llms.length * 3);
   });
 
+  it("serves every page in all nine languages with language-aware head, content and structured data", async () => {
+    const codes = ["hi", "kn", "ta", "te", "ml", "mr", "bn", "gu"];
+    const english = (await page("/services/threat-detection")).html;
+    for (const code of codes) {
+      const { r, html } = await page(`/${code}/services/threat-detection`);
+      expect(r.status, code).toBe(200);
+      expect(r.headers.get("content-language")).toBe(code);
+      expect(html).toContain(`<html lang="${code}" dir="ltr"`);
+      expect(html).toContain(`<link rel="canonical" href="https://www.duruvasa.com/${code}/services/threat-detection" />`);
+      expect(html).toContain(`hreflang="${code}" href="https://www.duruvasa.com/${code}/services/threat-detection"`);
+      expect(html).not.toContain("<h1>Threat Detection</h1>"); // translated, not English
+      expect(ld(html)[0].inLanguage).toBe(`${code}-IN`);
+      expect(html).toContain('id="__DATA__"');
+      expect(html).not.toBe(english);
+    }
+    const home = (await page("/ta")).html;
+    expect(home).toContain("சைபர் பாதுகாப்பு");
+    expect(home).toContain('href="/ta/insights"'); // internal links keep the language
+    expect((await page("/xx/insights")).r.status).toBe(404); // unknown prefix
+  });
+
+  it("serves translated content bundles and falls back to English for unknown languages", async () => {
+    const hi = await (await fetch(base + "/api/content?lang=hi")).json();
+    expect(hi.lang).toBe("hi");
+    expect(hi.hero.lineA).toBe("आज ही अपने डिजिटल");
+    expect(hi.services[0].title).toBe("थ्रेट डिटेक्शन");
+    expect(hi.ui["nav.home"]).toBe("होम");
+    expect(hi.site.email).toBe("info@duruvasa.com"); // untranslated facts stay
+    const en = await (await fetch(base + "/api/content?lang=zz")).json();
+    expect(en.lang).toBe("en");
+    expect(en.hero.lineA).toBe("Protecting Your");
+    const a = await fetch(base + "/api/content?lang=hi");
+    const b = await fetch(base + "/api/content?lang=ta");
+    expect(a.headers.get("etag")).not.toBe(b.headers.get("etag"));
+  });
+
+  it("lists every language version in the sitemap and keeps English at the root", async () => {
+    const sm = await (await fetch(base + "/sitemap.xml")).text();
+    expect(sm).toContain("xmlns:xhtml");
+    expect(sm).toContain("<loc>https://www.duruvasa.com/services/threat-detection</loc>");
+    expect(sm).toContain("<loc>https://www.duruvasa.com/gu/services/threat-detection</loc>");
+    expect(sm).toContain('hreflang="x-default" href="https://www.duruvasa.com/insights"');
+    expect(sm.match(/<url>/g)).toHaveLength(12 * 9);
+    const redirect = await fetch(base + "/en/insights", { redirect: "manual" });
+    expect(redirect.status).toBe(301);
+    expect(redirect.headers.get("location")).toBe("/insights");
+  });
+
   it("keeps the admin and API out of search results", async () => {
     expect((await fetch(base + "/admin/")).headers.get("x-robots-tag")).toBe("noindex, nofollow");
     expect((await fetch(base + "/api/content")).headers.get("x-robots-tag")).toBe("noindex, nofollow");
@@ -189,7 +246,7 @@ describe("SEO, AEO and GEO", () => {
     const hero = JSON.parse(row.value);
     run("UPDATE settings SET value = ? WHERE key = 'hero'", JSON.stringify({ ...hero, lineA: "Defending Your" }));
     invalidateBundle();
-    expect((await page("/")).html).toContain("<h1>Defending Your ");
+    expect((await page("/")).html).toContain('aria-label="Defending Your Digital Future Today"');
     run("UPDATE settings SET value = ? WHERE key = 'hero'", row.value);
     invalidateBundle();
   });

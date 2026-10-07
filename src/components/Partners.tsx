@@ -33,10 +33,10 @@ export default function Partners() {
                 aria-hidden={copy ? true : undefined}
                 tabIndex={copy ? -1 : 0}
               >
-                <span className="logo-box"><img src={p.src} alt={copy ? "" : `${p.name} logo`} loading="lazy" /></span>
+                <span className="logo-box"><img src={p.src} alt={copy ? "" : t("partners.logo", "{name} logo", { name: p.name })} loading="lazy" /></span>
                 <b>{p.name}</b>
                 <small>{p.tagline}</small>
-                <span className="visit">Visit website <i aria-hidden="true">↗</i><span className="sr"> of {p.name} (opens in a new tab)</span></span>
+                <span className="visit">{t("partners.visit", "Visit website")} <i aria-hidden="true">↗</i><span className="sr"> {t("partners.visitSr", "of {name} (opens in a new tab)", { name: p.name })}</span></span>
               </a>
             );
           })}

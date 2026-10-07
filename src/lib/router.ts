@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { legal, posts, services } from "../data/content";
+import { DEFAULT_LANG, prefixPath, splitLang, type Lang } from "../../shared/langs";
+import { currentLang, lp } from "./i18n";
 
 export type Route =
   | { name: "home" }
@@ -9,8 +11,16 @@ export type Route =
   | { name: "post"; slug: string }
   | { name: "notfound" };
 
+/** On the server there is no window; the page being rendered is set here before each render. */
+let ssrPath = "/";
+export const setSsrPath = (p: string) => { ssrPath = p; };
+const here = () => (typeof window === "undefined" ? ssrPath : window.location.pathname);
+
+/** Which language a path is in ("/hi/insights" -> "hi"). */
+export const langOf = (pathname: string): Lang => splitLang(pathname).lang;
+
 export function parseRoute(pathname: string): Route {
-  const p = pathname.replace(/\/+$/, "").replace(/^\//, "");
+  const p = splitLang(pathname).rest.replace(/\/+$/, "").replace(/^\//, "");
   if (p === "") return { name: "home" };
   if (legal.some((l) => l.slug === p)) return { name: "legal", slug: p };
   if (p === "insights") return { name: "insights" };
@@ -20,10 +30,18 @@ export function parseRoute(pathname: string): Route {
   return { name: "notfound" };
 }
 
+/** The same page in another language (used by the language switcher). */
+export function switchLangUrl(to: Lang, withHash = false): string {
+  const { rest } = splitLang(here());
+  const hash = withHash && typeof window !== "undefined" ? window.location.hash : "";
+  return prefixPath(rest.replace(/\/+$/, "") || "/", to) + hash;
+}
+
 const EVT = "app:route";
 
 export function navigate(to: string) {
-  const url = new URL(to, window.location.origin);
+  const localized = splitLang(new URL(to, "http://x").pathname).prefixed || currentLang() === DEFAULT_LANG ? to : lp(to);
+  const url = new URL(localized, window.location.origin);
   if (url.pathname + url.search !== window.location.pathname + window.location.search) {
     history.pushState({}, "", url.pathname + url.search + url.hash);
     window.dispatchEvent(new Event(EVT));
@@ -37,7 +55,7 @@ export function navigate(to: string) {
 }
 
 export function useRoute(): Route {
-  const [route, setRoute] = useState<Route>(() => parseRoute(window.location.pathname));
+  const [route, setRoute] = useState<Route>(() => parseRoute(here()));
   useEffect(() => {
     const on = () => setRoute(parseRoute(window.location.pathname));
     window.addEventListener("popstate", on);

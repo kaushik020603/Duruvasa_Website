@@ -2,6 +2,8 @@ import siteJson from "../content/site.json";
 import pagesJson from "../content/pages.json";
 import servicesJson from "../content/services.json";
 import postsJson from "../content/posts.json";
+import { currentLang, setI18n } from "../lib/i18n";
+import type { Lang } from "../../shared/langs";
 
 /** Local, optimised copies of the original site's images (decorative backgrounds). */
 export const img = {
@@ -59,6 +61,8 @@ export interface ContentBundle {
   site: SiteInfo; hero: Hero; about: About; sections: Sections;
   partners: Partner[]; team: Member[]; advantages: Item[]; offerings: Offering[]; attributes: Item[];
   services: Service[]; posts: Post[]; testimonials: Testimonial[]; badges: Badge[]; legal: LegalPage[]; resources: Resource[];
+  /** Set by the server: the language of this bundle and its interface strings. */
+  lang?: Lang; ui?: Record<string, string>;
 }
 
 const byDateDesc = (a: Post, b: Post) => b.date.localeCompare(a.date);
@@ -87,6 +91,7 @@ export const subscribeContent = (l: () => void) => { listeners.add(l); return ()
 export const getContentVersion = () => version;
 
 export function applyContent(c: Partial<ContentBundle>) {
+  if (c.lang || c.ui) setI18n(c.lang ?? currentLang(), c.ui ?? {});
   if (c.site) siteInfo = c.site;
   if (c.hero) hero = c.hero;
   if (c.about) about = c.about;

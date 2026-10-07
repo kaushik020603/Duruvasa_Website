@@ -16,3 +16,8 @@ export function fullTitle(title: string, siteName: string): string {
 
 /** The home page gets a keyword-bearing title instead of the bare company name. */
 export const homeTitle = (siteName: string) => `${siteName} | Cybersecurity Consulting & Cloud Security Services`;
+
+/** Questions shown in the home page FAQ and published as FAQPage structured data: the first few of each service. */
+export function homeFaqs(services: { faqs?: { q: string; a: string }[] }[], perService = 2): { q: string; a: string }[] {
+  return services.flatMap((s) => (s.faqs ?? []).slice(0, perService));
+}

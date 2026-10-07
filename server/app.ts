@@ -4,7 +4,8 @@ import express, { type ErrorRequestHandler, type Request, type Response, type Ne
 import { config, paths } from "./config.js";
 import { attachUser, authRoutes, csrfGuard, requireAuth } from "./auth.js";
 import { adminRoutes } from "./admin.js";
-import { contentRoutes, getBundle } from "./content.js";
+import { contentRoutes } from "./content.js";
+import { localizedBundle, parseLang } from "./i18n.js";
 import { inboxRoutes, publicRoutes } from "./inbox.js";
 import { mediaRoutes } from "./media.js";
 import { get } from "./db.js";
@@ -57,7 +58,7 @@ export function createApp() {
     res.json({ ok: true });
   });
   app.get("/api/content", (req, res) => {
-    const b = getBundle();
+    const b = localizedBundle(parseLang(req.query.lang)); // ?lang=hi returns the Hindi version; unknown values are English
     if (req.headers["if-none-match"] === b.etag) return void res.status(304).end();
     res.set({ ETag: b.etag, "Cache-Control": "no-cache", "Content-Type": "application/json; charset=utf-8" }).send(b.json);
   });
@@ -89,6 +90,9 @@ export function createApp() {
       if (req.method !== "GET" && req.method !== "HEAD") return next();
       const qs = req.originalUrl.slice(req.path.length);
       if (req.path === "/index.html") return void res.redirect(301, "/" + qs);
+      // English is the unprefixed default, so /en/... is a duplicate of /...
+      const en = req.path.match(/^\/en(\/.*)?$/);
+      if (en) return void res.redirect(301, (en[1] ?? "/") + qs);
       if (req.path.length > 1 && req.path.endsWith("/") && !/^\/(admin|api|uploads)(\/|$)/.test(req.path)) return void res.redirect(301, req.path.replace(/\/+$/, "") + qs);
       next();
     });

@@ -18,6 +18,7 @@ export function ScrollProgress() {
 }
 
 export function BackToTop() {
+  const { t } = usePrefs();
   const [show, setShow] = useState(false);
   useEffect(() => {
     const on = () => setShow(window.scrollY > 700);
@@ -26,13 +27,14 @@ export function BackToTop() {
     return () => window.removeEventListener("scroll", on);
   }, []);
   return (
-    <button className={`to-top${show ? " show" : ""}`} aria-label="Back to top" tabIndex={show ? 0 : -1}
+    <button className={`to-top${show ? " show" : ""}`} aria-label={t("totop", "Back to top")} tabIndex={show ? 0 : -1}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>↑</button>
   );
 }
 
 export function SkipLink() {
-  return <a className="skip" href="#main">Skip to content</a>;
+  const { t } = usePrefs();
+  return <a className="skip" href="#main">{t("skip", "Skip to content")}</a>;
 }
 
 const RAIL = [
@@ -43,10 +45,11 @@ const RAIL_IDS = RAIL.map((r) => r[0]);
 
 export function SectionRail() {
   const active = useActiveSection(RAIL_IDS);
+  const { t } = usePrefs();
   return (
-    <nav className="rail" aria-label="Page sections">
+    <nav className="rail" aria-label={t("rail.label", "Page sections")}>
       {RAIL.map(([id, label]) => (
-        <a key={id} href={`#${id}`} className={active === id ? "on" : ""} aria-label={label} title={label}><i /></a>
+        <a key={id} href={`#${id}`} className={active === id ? "on" : ""} aria-label={t(`rail.${id}`, label)} title={t(`rail.${id}`, label)}><i /></a>
       ))}
     </nav>
   );
@@ -54,14 +57,19 @@ export function SectionRail() {
 
 /** First-visit intro. Skippable by click or key; shown once per session. */
 export function Loader() {
-  const [show, setShow] = useState(() => {
+  // Rendered into the server HTML so the first paint matches; theme-init.js and CSS hide it for repeat visits and
+  // reduced-motion users before anything paints, and this effect then removes it from the page.
+  const [show, setShow] = useState(true);
+  const [leaving, setLeaving] = useState(false);
+  const { t } = usePrefs();
+  useEffect(() => {
+    let seen = false;
     try {
-      if (sessionStorage.getItem("intro")) return false;
+      seen = !!sessionStorage.getItem("intro");
       sessionStorage.setItem("intro", "1");
     } catch { /* storage blocked: still show once */ }
-    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  });
-  const [leaving, setLeaving] = useState(false);
+    if (seen || window.matchMedia("(prefers-reduced-motion: reduce)").matches) setShow(false);
+  }, []);
   useEffect(() => {
     if (!show) return;
     const done = () => { setLeaving(true); setTimeout(() => setShow(false), 500); };
@@ -72,7 +80,7 @@ export function Loader() {
   }, [show]);
   if (!show) return null;
   return (
-    <div className={`loader${leaving ? " leaving" : ""}`} role="status" aria-label="Loading">
+    <div className={`loader${leaving ? " leaving" : ""}`} role="status" aria-label={t("loading", "Loading")}>
       <div className="loader-in">
         <svg viewBox="0 0 100 120" width="84" height="100" aria-hidden="true">
           <path className="shield" d="M50 6 12 20v30c0 28 16 50 38 62 22-12 38-34 38-62V20z" fill="none" stroke="#7fcb7f" strokeWidth="3" />
@@ -86,15 +94,17 @@ export function Loader() {
 }
 
 export function CookieBanner() {
-  const { consent, setConsent } = usePrefs();
+  const { consent, setConsent, t } = usePrefs();
+  const [mounted, setMounted] = useState(false); // stored consent is only known in the browser
+  useEffect(() => setMounted(true), []);
   const configured = !!import.meta.env.VITE_PLAUSIBLE_DOMAIN;
-  if (consent || !configured) return null;
+  if (!mounted || consent || !configured) return null;
   return (
-    <div className="cookie" role="dialog" aria-label="Analytics consent">
-      <p>We would like to use privacy-friendly analytics (no cookies, no cross-site tracking) to understand how the site is used.</p>
+    <div className="cookie" role="dialog" aria-label={t("cookie.label", "Analytics consent")}>
+      <p>{t("cookie.text", "We would like to use privacy-friendly analytics (no cookies, no cross-site tracking) to understand how the site is used.")}</p>
       <div>
-        <button type="button" className="btn-light" onClick={() => setConsent("granted")}>Accept</button>
-        <button type="button" className="btn-light ghost" onClick={() => setConsent("denied")}>Decline</button>
+        <button type="button" className="btn-light" onClick={() => setConsent("granted")}>{t("cookie.accept", "Accept")}</button>
+        <button type="button" className="btn-light ghost" onClick={() => setConsent("denied")}>{t("cookie.decline", "Decline")}</button>
       </div>
     </div>
   );

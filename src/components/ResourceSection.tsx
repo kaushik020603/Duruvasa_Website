@@ -1,11 +1,14 @@
 import { useRef, useState, type FormEvent } from "react";
 import { resources, sections } from "../data/content";
+import { lp } from "../lib/i18n";
+import { usePrefs } from "../lib/prefs";
 
 type State = "idle" | "sending" | "done" | "error";
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Gated download: the visitor trades an email address (with consent) for a time-limited download link. */
 export default function ResourceSection() {
+  const { t } = usePrefs();
   const res = resources[0];
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,8 +24,8 @@ export default function ResourceSection() {
   async function submit(e: FormEvent) {
     e.preventDefault();
     const errs: Record<string, string> = {};
-    if (!EMAIL.test(email.trim())) errs.email = "Enter a valid email";
-    if (!consent) errs.consent = "Please tick the box to continue";
+    if (!EMAIL.test(email.trim())) errs.email = t("val.email", "Enter a valid email");
+    if (!consent) errs.consent = t("res.consentErr", "Please tick the box to continue");
     setErrors(errs);
     if (Object.keys(errs).length) return;
     setState("sending"); setMessage("");
@@ -34,7 +37,7 @@ export default function ResourceSection() {
       const data = await r.json().catch(() => ({}));
       if (!r.ok) {
         if (data.errors) setErrors(data.errors);
-        throw new Error(data.error || "Something went wrong.");
+        throw new Error(data.error || t("res.error", "Something went wrong."));
       }
       setLink(data.downloadUrl);
       setState("done");
@@ -59,32 +62,32 @@ export default function ResourceSection() {
 
         <div className="resource-card reveal">
           <div className="pdf-cover" aria-hidden="true">
-            <i /><b>Cloud Security<br />Checklist</b><small>DuRuVaSa CloudSec</small><span>PDF · 3 pages</span>
+            <i /><b>Cloud Security<br />Checklist</b><small>DuRuVaSa CloudSec</small><span>{t("res.pdf", "PDF · 3 pages")}</span>
           </div>
           {state === "done" ? (
             <div className="resource-done" role="status">
-              <h3>Your checklist is on its way</h3>
-              <p>The download should start automatically. If it does not, use the button. We have also emailed you the link.</p>
-              <a className="btn-light" href={link} download={res.fileName || undefined}>⬇ Download the PDF</a>
+              <h3>{t("res.doneH", "Your checklist is on its way")}</h3>
+              <p>{t("res.doneP", "The download should start automatically. If it does not, use the button. We have also emailed you the link.")}</p>
+              <a className="btn-light" href={link} download={res.fileName || undefined}>⬇ {t("res.download", "Download the PDF")}</a>
             </div>
           ) : (
             <form onSubmit={submit} noValidate>
               <label>
-                <span className="sr">Your name</span>
-                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name (optional)" autoComplete="name" maxLength={80} />
+                <span className="sr">{t("res.nameL", "Your name")}</span>
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("res.name", "Your name (optional)")} autoComplete="name" maxLength={80} />
               </label>
               <label>
-                <span className="sr">Work email</span>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email address" autoComplete="email" aria-invalid={!!errors.email} />
+                <span className="sr">{t("res.emailL", "Work email")}</span>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("res.email", "Your email address")} autoComplete="email" aria-invalid={!!errors.email} />
                 {errors.email && <span className="err" role="alert">{errors.email}</span>}
               </label>
               <label className="hp" aria-hidden="true">Website<input tabIndex={-1} autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} /></label>
               <label className="consent">
                 <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} aria-invalid={!!errors.consent} />
-                <span>I agree to receive this checklist and occasional security tips from DuRuVaSa CloudSec. I can unsubscribe at any time. See our <a href="/privacy-policy" data-route>privacy policy</a>.</span>
+                <span>{t("res.consent", "I agree to receive this checklist and occasional security tips from DuRuVaSa CloudSec. I can unsubscribe at any time. See our")} <a href={lp("/privacy-policy")} data-route>{t("res.privacy", "privacy policy")}</a>.</span>
               </label>
               {errors.consent && <span className="err" role="alert">{errors.consent}</span>}
-              <button type="submit" className="btn-light magnetic" disabled={state === "sending"}>{state === "sending" ? "Preparing…" : "Send me the checklist"}</button>
+              <button type="submit" className="btn-light magnetic" disabled={state === "sending"}>{state === "sending" ? t("res.sending", "Preparing…") : t("res.send", "Send me the checklist")}</button>
               {state === "error" && <p className="form-status err" role="alert">{message}</p>}
             </form>
           )}

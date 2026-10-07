@@ -13,6 +13,7 @@ import Trust from "./components/Trust";
 import Attributes from "./components/Attributes";
 import Contact from "./components/Contact";
 import ResourceSection from "./components/ResourceSection";
+import HomeFaq from "./components/HomeFaq";
 import ContactFab from "./components/ContactFab";
 import Footer from "./components/Footer";
 import { InsightsPage, Legal, NotFound, PostPage, ServicePage } from "./components/Pages";
@@ -22,11 +23,13 @@ import { initFx } from "./fx";
 import { installLinkInterceptor, useRoute } from "./lib/router";
 import { useHead } from "./lib/head";
 import { homeTitle } from "../shared/seo";
-import { PrefsProvider, useAnalytics } from "./lib/prefs";
+import { PrefsProvider, useAnalytics, usePrefs } from "./lib/prefs";
+import type { Lang } from "../shared/langs";
 
 function Home() {
+  const { t } = usePrefs();
   useHead({
-    title: homeTitle(SITE.name), path: "/",
+    title: t("home.title", homeTitle(SITE.name), { name: SITE.name }), path: "/",
     jsonLd: {
       "@context": "https://schema.org", "@type": "Organization", name: SITE.name, url: SITE.url,
       logo: SITE.url + img.logo, description: SITE.description,
@@ -49,13 +52,14 @@ function Home() {
       <Quiz />
       <Trust />
       <ResourceSection />
+      <HomeFaq />
       <Contact />
     </>
   );
 }
 
 function Shell() {
-  useSyncExternalStore(subscribeContent, getContentVersion); // re-render whole tree when CMS content changes
+  useSyncExternalStore(subscribeContent, getContentVersion, getContentVersion); // re-render whole tree when CMS content changes
   const route = useRoute();
   useAnalytics();
   useReveal(route.name + ("slug" in route ? route.slug : ""));
@@ -85,9 +89,9 @@ function Shell() {
   );
 }
 
-export default function App() {
+export default function App({ lang }: { lang: Lang }) {
   return (
-    <PrefsProvider>
+    <PrefsProvider lang={lang}>
       <Shell />
     </PrefsProvider>
   );

@@ -1,4 +1,8 @@
 import { img, legal, prettyPhone, services, SITE, siteInfo } from "../data/content";
+import { lp } from "../lib/i18n";
+import { LANGS } from "../../shared/langs";
+import { switchLangUrl } from "../lib/router";
+import { usePrefs } from "../lib/prefs";
 
 const Icon = ({ d, size = 18 }: { d: string; size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true"><path d={d} /></svg>
@@ -11,63 +15,71 @@ const IN = "M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.
 const digits = (p: string) => p.replace(/[^\d]/g, "");
 
 export default function Footer() {
+  const { t, lang } = usePrefs();
   const wa = siteInfo.whatsapp ? `https://wa.me/${digits(siteInfo.whatsapp)}?text=${encodeURIComponent(siteInfo.whatsappMessage || "")}` : "";
   return (
     <footer className="site-footer" style={{ ["--foot-bg" as string]: `url(${img.footerBg})` }}>
       <div className="foot-cta">
         <div>
-          <h2>Ready to secure your cloud?</h2>
-          <p>Talk to our team about threat detection, compliance and 24/7 monitoring.</p>
+          <h2>{t("foot.ctaH", "Ready to secure your cloud?")}</h2>
+          <p>{t("foot.ctaP", "Talk to our team about threat detection, compliance and 24/7 monitoring.")}</p>
         </div>
         <div className="foot-cta-actions">
-          <a className="foot-btn primary" href="/#contact" data-route>Book a consultation</a>
-          {wa && <a className="foot-btn" href={wa} target="_blank" rel="noopener noreferrer"><Icon d={WA} /> WhatsApp us</a>}
+          <a className="foot-btn primary" href={lp("/#contact")} data-route>{t("foot.book", "Book a consultation")}</a>
+          {wa && <a className="foot-btn" href={wa} target="_blank" rel="noopener noreferrer"><Icon d={WA} /> {t("foot.waUs", "WhatsApp us")}</a>}
         </div>
       </div>
 
       <div className="foot-grid">
-        <section className="foot-brand" aria-label="About">
-          <a className="foot-logo" href="/" data-route aria-label={`${SITE.name} home`}><img src={img.logo} alt={SITE.name} width={150} height={112} loading="lazy" /></a>
+        <section className="foot-brand" aria-label={t("foot.aboutLabel", "About")}>
+          <a className="foot-logo" href={lp("/")} data-route aria-label={t("hdr.home", "DuRuVaSa CloudSec home")}><img src={img.logo} alt={SITE.name} width={150} height={112} loading="lazy" /></a>
           <p>{siteInfo.footerNote}</p>
           {siteInfo.linkedin && (
-            <a className="foot-social" href={siteInfo.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)"><Icon d={IN} size={20} /></a>
+            <a className="foot-social" href={siteInfo.linkedin} target="_blank" rel="noopener noreferrer" aria-label={t("foot.linkedin", "LinkedIn (opens in a new tab)")}><Icon d={IN} size={20} /></a>
           )}
         </section>
 
-        <nav aria-label="Services">
-          <h3>Services</h3>
+        <nav aria-label={t("foot.services", "Services")}>
+          <h3>{t("foot.services", "Services")}</h3>
           <ul>
-            {services.map((s) => <li key={s.slug}><a href={`/services/${s.slug}`} data-route>{s.title}</a></li>)}
+            {services.map((s) => <li key={s.slug}><a href={lp(`/services/${s.slug}`)} data-route>{s.title}</a></li>)}
           </ul>
         </nav>
 
-        <nav aria-label="Company">
-          <h3>Company</h3>
+        <nav aria-label={t("foot.company", "Company")}>
+          <h3>{t("foot.company", "Company")}</h3>
           <ul>
-            <li><a href="/#about" data-route>About us</a></li>
-            <li><a href="/#team" data-route>Team</a></li>
-            <li><a href="/#partners" data-route>Partners</a></li>
-            <li><a href="/insights" data-route>Insights</a></li>
-            <li><a href="/#resources" data-route>Free security checklist</a></li>
-            <li><a href="/#quiz" data-route>Cloud security check</a></li>
+            <li><a href={lp("/#about")} data-route>{t("foot.about", "About us")}</a></li>
+            <li><a href={lp("/#team")} data-route>{t("foot.team", "Team")}</a></li>
+            <li><a href={lp("/#partners")} data-route>{t("foot.partners", "Partners")}</a></li>
+            <li><a href={lp("/insights")} data-route>{t("hdr.insights", "Insights")}</a></li>
+            <li><a href={lp("/#resources")} data-route>{t("foot.checklist", "Free security checklist")}</a></li>
+            <li><a href={lp("/#quiz")} data-route>{t("foot.quiz", "Cloud security check")}</a></li>
           </ul>
         </nav>
 
-        <section aria-label="Contact">
-          <h3>Contact</h3>
+        <section aria-label={t("foot.contact", "Contact")}>
+          <h3>{t("foot.contact", "Contact")}</h3>
           <ul className="foot-contact">
             <li><Icon d={MAIL} /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
             {siteInfo.phone && <li><Icon d={PHONE} /><a href={`tel:${siteInfo.phone}`}>{prettyPhone(siteInfo.phone)}{siteInfo.phoneLabel ? <small>{siteInfo.phoneLabel}</small> : null}</a></li>}
-            {wa && <li><Icon d={WA} /><a href={wa} target="_blank" rel="noopener noreferrer">WhatsApp {prettyPhone(siteInfo.whatsapp)}</a></li>}
-            <li><a className="foot-link-btn" href="/#contact" data-route>Send us a message →</a></li>
+            {wa && <li><Icon d={WA} /><a href={wa} target="_blank" rel="noopener noreferrer">{t("foot.waNum", "WhatsApp")} {prettyPhone(siteInfo.whatsapp)}</a></li>}
+            <li><a className="foot-link-btn" href={lp("/#contact")} data-route>{t("foot.send", "Send us a message")} →</a></li>
           </ul>
         </section>
       </div>
 
       <div className="foot-bottom">
-        <p>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
-        <ul aria-label="Legal">
-          {legal.map((l) => <li key={l.slug}><a href={`/${l.slug}`} data-route>{l.title}</a></li>)}
+        <p suppressHydrationWarning>© {new Date().getFullYear()} {SITE.name}. {t("foot.rights", "All rights reserved.")}</p>
+        <ul aria-label={t("foot.legal", "Legal")}>
+          {legal.map((l) => <li key={l.slug}><a href={lp(`/${l.slug}`)} data-route>{l.title}</a></li>)}
+        </ul>
+        <ul className="foot-langs" aria-label={t("hdr.language", "Language")}>
+          {LANGS.map((l) => (
+            <li key={l.code}>
+              <a href={switchLangUrl(l.code)} hrefLang={l.code} lang={l.code} aria-current={l.code === lang ? "true" : undefined}>{l.native}</a>
+            </li>
+          ))}
         </ul>
       </div>
     </footer>

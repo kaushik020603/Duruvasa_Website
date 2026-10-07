@@ -3,12 +3,14 @@ export type Errors = Partial<Record<keyof Values, string>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validate(v: Values): Errors {
+type T = (key: string, fallback: string) => string;
+
+export function validate(v: Values, t: T = (_k, fb) => fb): Errors {
   const e: Errors = {};
-  if (!v.first.trim()) e.first = "Enter your first name";
-  if (!v.last.trim()) e.last = "Enter your last name";
-  if (!EMAIL.test(v.email.trim())) e.email = "Enter a valid email";
-  if (v.message.trim().length < 10) e.message = "Please add a little more detail";
+  if (!v.first.trim()) e.first = t("val.first", "Enter your first name");
+  if (!v.last.trim()) e.last = t("val.last", "Enter your last name");
+  if (!EMAIL.test(v.email.trim())) e.email = t("val.email", "Enter a valid email");
+  if (v.message.trim().length < 10) e.message = t("val.message", "Please add a little more detail");
   return e;
 }
 

@@ -15,6 +15,8 @@ export const config = {
   dataDir: path.resolve(env.DATA_DIR ?? path.join(ROOT, "data")),
   distDir: path.resolve(env.DIST_DIR ?? path.join(ROOT, "dist")),
   contentSeedDir: path.join(ROOT, "src", "content"),
+  i18nDir: path.join(ROOT, "i18n"),
+  ssrBundle: path.join(ROOT, "dist-ssr", "entry-server.js"),
   assetsDir: path.join(ROOT, "server", "assets"),
   publicDir: path.join(ROOT, "public"),
   publicUrl: (env.PUBLIC_URL ?? "http://localhost:5173").replace(/\/$/, ""),

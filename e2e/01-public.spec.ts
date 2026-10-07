@@ -178,3 +178,29 @@ test("team: exactly two consulting partners, OEM logos on every certification, n
     await expect.poll(() => i.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
   }
 });
+
+test("all nine languages server-render, hydrate without errors and keep links in their language", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  page.on("pageerror", (e) => errors.push(String(e)));
+  for (const code of ["hi", "kn", "ta", "te", "ml", "mr", "bn", "gu"]) {
+    await page.goto(`/${code}`);
+    await expect(page.locator("html")).toHaveAttribute("lang", code);
+    await expect(page.locator(`#primary-nav a[href="/${code}/insights"]`)).toHaveCount(1);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://www.duruvasa.com/${code}`);
+    await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(10);
+    await page.waitForTimeout(300);
+  }
+  expect(errors).toEqual([]);
+});
+
+test("the footer language links move to the same page in another language", async ({ page }) => {
+  await page.goto("/services/threat-detection");
+  await page.locator(".foot-langs").getByRole("link", { name: "हिन्दी" }).click();
+  await expect(page).toHaveURL(/\/hi\/services\/threat-detection$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "hi");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("थ्रेट डिटेक्शन");
+  await page.locator(".foot-langs").getByRole("link", { name: "English" }).click();
+  await expect(page).toHaveURL(/\/services\/threat-detection$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Threat Detection");
+});

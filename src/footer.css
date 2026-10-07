@@ -41,6 +41,8 @@
 .foot-bottom li { margin: 0; font: 400 13.5px Arial, sans-serif; }
 .foot-bottom a { color: rgba(255, 250, 248, .8); }
 .foot-bottom a:hover { color: #fff; text-decoration: underline; }
+.foot-bottom .foot-langs { flex-basis: 100%; gap: 4px 18px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, .08); }
+.foot-langs a[aria-current="true"] { color: #fff; font-weight: 700; }
 
 @media (max-width: 960px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 34px 28px; } .foot-brand { grid-column: 1 / -1; } .foot-brand p { max-width: 520px; } }
 @media (max-width: 560px) {

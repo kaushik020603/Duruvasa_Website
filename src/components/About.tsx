@@ -1,29 +1,32 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { about, img, services, SITE } from "../data/content";
 import { usePrefs } from "../lib/prefs";
+import { lp } from "../lib/i18n";
 
 function Count({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [n, setN] = useState(0);
+  // The server renders the real number. After hydration the browser resets it to 0 and counts up when it scrolls into view
+  // (written straight to the DOM so React's hydrated markup is not disturbed).
   useEffect(() => {
     const el = ref.current!;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    el.textContent = `0${suffix}`;
+    let raf = 0;
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return;
       io.disconnect();
-      if (reduce) { setN(to); return; }
       const t0 = performance.now();
       const step = (t: number) => {
         const p = Math.min((t - t0) / 1400, 1);
-        setN(Math.round(to * (1 - Math.pow(1 - p, 3))));
-        if (p < 1) requestAnimationFrame(step);
+        el.textContent = `${Math.round(to * (1 - Math.pow(1 - p, 3)))}${suffix}`;
+        if (p < 1) raf = requestAnimationFrame(step);
       };
-      requestAnimationFrame(step);
+      raf = requestAnimationFrame(step);
     }, { threshold: 0.6 });
     io.observe(el);
-    return () => io.disconnect();
-  }, [to]);
-  return <span ref={ref}>{n}{suffix}</span>;
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+  }, [to, suffix]);
+  return <span ref={ref}>{to}{suffix}</span>;
 }
 
 export default function About() {
@@ -43,8 +46,8 @@ export default function About() {
               </p>
               {about.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
               <div className="about-cta">
-                <a className="btn-light magnetic" href="#contact">Talk to our team</a>
-                <a className="btn-light ghost magnetic" href="#quiz">Take the security check</a>
+                <a className="btn-light magnetic" href="#contact">{t("about.cta1", "Talk to our team")}</a>
+                <a className="btn-light ghost magnetic" href="#quiz">{t("about.cta2", "Take the security check")}</a>
                 <a className="mail-link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
               </div>
             </div>
@@ -66,11 +69,11 @@ export default function About() {
             ))}
           </div>
 
-          <h3 className="about-sub reveal">What we do</h3>
+          <h3 className="about-sub reveal">{t("about.whatWeDo", "What we do")}</h3>
           <ul className="what-we-do">
             {services.map((s, i) => (
               <li key={s.slug} className="reveal" style={{ transitionDelay: `${i * 80}ms` }}>
-                <a href={`/services/${s.slug}`} data-route>
+                <a href={lp(`/services/${s.slug}`)} data-route>
                   <b>{s.title}</b>
                   <span>{s.tagline}</span>
                   <i aria-hidden="true">→</i>
@@ -79,7 +82,7 @@ export default function About() {
             ))}
           </ul>
 
-          <h3 className="about-sub reveal">What we stand for</h3>
+          <h3 className="about-sub reveal">{t("about.stand", "What we stand for")}</h3>
           <ul className="values">
             {about.values.map((v, i) => (
               <li key={v.title + i} className="reveal" style={{ transitionDelay: `${i * 80}ms` }}>

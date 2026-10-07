@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { SITE } from "../data/content";
 import { clip, fullTitle } from "../../shared/seo";
+import { lp } from "./i18n";
 
 interface Head {
   title: string;
@@ -27,7 +28,7 @@ export function useHead({ title, description = SITE.description, path = "/", typ
   useEffect(() => {
     const full = fullTitle(title, SITE.name);
     const desc = clip(description);
-    const url = SITE.url + path;
+    const url = SITE.url + (path === "/" && lp("/") === "/" ? "/" : lp(path));
     document.title = full;
     setMeta("name", "description", desc);
     setMeta("property", "og:title", full);

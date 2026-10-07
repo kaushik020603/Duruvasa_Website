@@ -1,5 +1,6 @@
 import { img, offerings, sections, type IconName } from "../data/content";
 import { usePrefs } from "../lib/prefs";
+import { lp } from "../lib/i18n";
 
 function Icon({ name }: { name: IconName }) {
   const common = { viewBox: "0 0 24 24", width: 18, height: 18, fill: "#fff", "aria-hidden": true } as const;
@@ -35,7 +36,7 @@ export default function Offerings() {
             <article>
               <h3>{o.title}</h3>
               <p>{o.text}</p>
-              {o.slug && <a className="more" href={`/services/${o.slug}`} data-route>Learn more<span className="sr"> about {o.title}</span> →</a>}
+              {o.slug && <a className="more" href={lp(`/services/${o.slug}`)} data-route>{t("off.more", "Learn more")}<span className="sr"> {t("off.moreAbout", "about {title}", { title: o.title })}</span> →</a>}
             </article>
           </div>
         ))}

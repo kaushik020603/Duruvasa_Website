@@ -1,5 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { translate, type Lang } from "./i18n";
+import { switchLangUrl } from "./router";
 
 export type Theme = "dark" | "light";
 export type Consent = "granted" | "denied" | null;
@@ -7,7 +8,7 @@ export type Consent = "granted" | "denied" | null;
 interface Prefs {
   theme: Theme; toggleTheme: () => void;
   lang: Lang; setLang: (l: Lang) => void;
-  t: (key: string, fallback: string) => string;
+  t: (key: string, fallback: string, vars?: Record<string, string | number>) => string;
   consent: Consent; setConsent: (c: Exclude<Consent, null>) => void;
 }
 
@@ -21,21 +22,32 @@ function read<T extends string>(key: string, allowed: readonly T[], fallback: T 
 }
 function write(key: string, v: string) { try { localStorage.setItem(key, v); } catch { /* storage blocked */ } }
 
-export function PrefsProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => read("theme", ["dark", "light"] as const, "dark")!);
-  const [lang, setLangState] = useState<Lang>(() => read("lang", ["en", "hi", "kn"] as const, "en")!);
-  const [consent, setConsentState] = useState<Consent>(() => read("consent", ["granted", "denied"] as const, null));
+/**
+ * The language comes from the page address (/hi/...), so server and browser always agree on it.
+ * Theme and consent live in the browser only: they start at their defaults and are read after the page has hydrated,
+ * which keeps the server-rendered markup identical to the first browser render.
+ */
+export function PrefsProvider({ lang, children }: { lang: Lang; children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>("dark");
+  const [consent, setConsentState] = useState<Consent>(null);
+  const ready = useRef(false);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.lang = lang;
-  }, [theme, lang]);
+    setTheme(read("theme", ["dark", "light"] as const, "dark")!);
+    setConsentState(read("consent", ["granted", "denied"] as const, null));
+    ready.current = true;
+  }, []);
+  useEffect(() => {
+    if (ready.current) document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   const toggleTheme = useCallback(() => setTheme((t) => { const n = t === "dark" ? "light" : "dark"; write("theme", n); return n; }), []);
-  const setLang = useCallback((l: Lang) => { write("lang", l); setLangState(l); }, []);
+  const setLang = useCallback((l: Lang) => { window.location.assign(switchLangUrl(l, true)); }, []);
   const setConsent = useCallback((c: "granted" | "denied") => { write("consent", c); setConsentState(c); }, []);
-  const t = useCallback((key: string, fb: string) => translate(lang, key, fb), [lang]);
+  const t = useCallback((key: string, fb: string, vars?: Record<string, string | number>) => translate(key, fb, vars), []);
 
+  // `lang` is in the dependency list so every consumer re-renders (and re-reads the strings) when the language changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = useMemo(() => ({ theme, toggleTheme, lang, setLang, t, consent, setConsent }), [theme, toggleTheme, lang, setLang, t, consent, setConsent]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

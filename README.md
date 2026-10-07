@@ -78,6 +78,16 @@ Email is optional. With no `RESEND_API_KEY` (in `/etc/duruvasa.env`) nothing is 
 * **CI** (`.github/workflows/ci.yml`): type-check, unit/API tests, build, **Playwright browser tests** (desktop and phone), then **Lighthouse + security headers** against a throwaway instance.
 * **Post-deploy audit** (`post-deploy-audit.yml`): run by hand after deploying and automatically every Monday against the live site (headers, admin lock-down, HTTPS redirect, certificate expiry, Lighthouse).
 
-## Content and translations
+## Content, languages and server-side rendering
 
-Starting content is in `src/content/*.json` and is imported into the database on first start; after that the admin is the source of truth. Hindi and Kannada translations (`src/lib/i18n.ts`) cover the main sections; they are machine-assisted drafts, so have a native speaker review them. Edited English text shows in English; translated strings remain until changed in that file.
+Starting content is in `src/content/*.json` and is imported into the database on first start; after that the admin is the source of truth (English).
+
+**Nine languages** (English at `/`, then `/hi`, `/kn`, `/ta`, `/te`, `/ml`, `/mr`, `/bn`, `/gu`), each page with its own address, `hreflang` alternates and sitemap entries. Translations are plain files, one per language: `i18n/<code>.json`.
+
+* `ui` holds the interface strings (the English originals are listed in `i18n/en.ui.json`); everything else mirrors the English content (`hero`, `about`, `services.<slug>`, `posts.<slug>`, `team.<name>`, ...).
+* The server merges a language file over the English content: by slug or name for services, posts, legal pages and people, and by position for lists whose length is unchanged. If someone adds or removes items in an English list in the admin, that list falls back to English until the translation file is updated. Edited English text therefore stays English in the other languages until the file is edited.
+* `npm test` checks every language file: all interface strings present, placeholders such as `{title}` preserved, list lengths and links matching the English content.
+* The first drafts were written by an AI model. **Have a native speaker review each language** before relying on it (legal pages are placeholders in every language).
+* To add a language: add it to `shared/langs.ts`, add `i18n/<code>.json`, run `npm test`.
+
+**Server-side rendering.** `npm run build` also produces `dist-ssr/` (the React app compiled for Node). The server renders each page to HTML with the real components, embeds the content it used, and the browser hydrates it, so crawlers and AI bots that do not run JavaScript see the full page, and the first paint is fast. Per-page `<title>`, description, canonical, hreflang, Open Graph and JSON-LD come from `server/seo.ts`; `sitemap.xml`, `robots.txt`, `llms.txt` and `llms-full.txt` are generated from the live content. Set `SITE_URL` if the public address is not `https://www.duruvasa.com`.
