@@ -22,5 +22,5 @@ const xml =
   `\n</urlset>\n`;
 
 writeFileSync(new URL("../public/sitemap.xml", import.meta.url), xml);
-writeFileSync(new URL("../public/robots.txt", import.meta.url), `User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(new URL("../public/robots.txt", import.meta.url), `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/admin/\n\nSitemap: ${site}/sitemap.xml\n`);
 console.log(`seo: wrote sitemap.xml (${urls.length} urls) and robots.txt for ${site}`);

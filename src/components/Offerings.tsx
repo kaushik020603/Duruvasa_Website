@@ -35,7 +35,7 @@ export default function Offerings() {
             <article>
               <h3>{o.title}</h3>
               <p>{o.text}</p>
-              {o.slug && <a className="more" href={`/services/${o.slug}`} data-route>Learn more →</a>}
+              {o.slug && <a className="more" href={`/services/${o.slug}`} data-route>Learn more<span className="sr"> about {o.title}</span> →</a>}
             </article>
           </div>
         ))}

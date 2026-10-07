@@ -9,7 +9,7 @@ const fmtDate = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "n
 
 export function Legal({ slug }: { slug: string }) {
   const page = legal.find((l) => l.slug === slug)!;
-  useHead({ title: page.title, path: `/${slug}` });
+  useHead({ title: page.title, path: `/${slug}`, description: `${page.title} for ${SITE.name}.` });
   return (
     <section className="page legal">
       <h1>{page.title}</h1>
@@ -112,7 +112,7 @@ export function InsightsPage() {
             <time dateTime={p.date}>{fmtDate(p.date)} · {p.readMins} min read</time>
             <h2>{p.title}</h2>
             <p>{p.excerpt}</p>
-            <span className="more">Read article →</span>
+            <span className="more">Read article<span className="sr">: {p.title}</span> →</span>
           </a>
         ))}
       </div>

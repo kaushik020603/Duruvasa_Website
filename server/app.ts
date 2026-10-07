@@ -9,6 +9,7 @@ import { inboxRoutes, publicRoutes } from "./inbox.js";
 import { mediaRoutes } from "./media.js";
 import { get } from "./db.js";
 import { HttpError } from "./util.js";
+import { pageHandler, seoFileRoutes } from "./seo.js";
 
 const CSP = [
   "default-src 'self'",
@@ -30,6 +31,7 @@ function securityHeaders(req: Request, res: Response, next: NextFunction) {
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  if (/^\/(admin|api)(\/|$)/.test(req.path)) res.setHeader("X-Robots-Tag", "noindex, nofollow");
   if (req.secure || config.production) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   next();
 }
@@ -80,7 +82,16 @@ export function createApp() {
   }));
 
   const dist = config.distDir;
+  app.use(seoFileRoutes());
   if (fs.existsSync(dist)) {
+    // One address per page: /index.html and trailing slashes redirect to the canonical form.
+    app.use((req, res, next) => {
+      if (req.method !== "GET" && req.method !== "HEAD") return next();
+      const qs = req.originalUrl.slice(req.path.length);
+      if (req.path === "/index.html") return void res.redirect(301, "/" + qs);
+      if (req.path.length > 1 && req.path.endsWith("/") && !/^\/(admin|api|uploads)(\/|$)/.test(req.path)) return void res.redirect(301, req.path.replace(/\/+$/, "") + qs);
+      next();
+    });
     app.use(express.static(dist, {
       index: false, dotfiles: "ignore",
       setHeaders: (res, file) => {
@@ -89,13 +100,9 @@ export function createApp() {
         else res.setHeader("Cache-Control", "public, max-age=86400");
       },
     }));
-    const sendHtml = (file: string) => (_req: Request, res: Response) => {
-      res.setHeader("Cache-Control", "no-cache");
-      res.sendFile(file);
-    };
     // The admin shell must never be cached by browsers or proxies.
     app.get(["/admin", "/admin/"], (_req, res) => { res.setHeader("Cache-Control", "no-store"); res.sendFile(path.join(dist, "admin", "index.html")); });
-    app.get(/^\/(?!api\/|uploads\/)[^.]*$/, sendHtml(path.join(dist, "index.html")));
+    app.get(/^\/(?!api\/|uploads\/)[^.]*$/, pageHandler(path.join(dist, "index.html")));
   }
 
   app.use((_req, res) => void res.status(404).type("text").send("Not found"));

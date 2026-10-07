@@ -116,6 +116,85 @@ describe("public API", () => {
   });
 });
 
+describe("SEO, AEO and GEO", () => {
+  const page = async (p: string) => { const r = await fetch(base + p, { redirect: "manual" }); return { r, html: await r.text() }; };
+  const ld = (html: string) => [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+
+  it("renders per-page head tags and a crawlable body without JavaScript", async () => {
+    const { r, html } = await page("/services/threat-detection");
+    expect(r.status).toBe(200);
+    expect(html).toContain("<title>Threat Detection | DuRuVaSa CloudSec</title>");
+    expect(html).toContain('<link rel="canonical" href="https://www.duruvasa.com/services/threat-detection" />');
+    expect(html).toContain('<meta name="twitter:title"');
+    expect(html.match(/<title>/g)).toHaveLength(1);
+    expect(html.match(/name="description"/g)).toHaveLength(1);
+    expect(html).toMatch(/<div id="root"><div class="ssr">[\s\S]*<h1>Threat Detection<\/h1>/);
+    const types = ld(html).map((x) => x["@type"]);
+    expect(types).toEqual(["Service", "FAQPage", "BreadcrumbList"]);
+  });
+
+  it("describes the organisation, team and site on the home page", async () => {
+    const { html } = await page("/");
+    expect(html).toContain("<h1>Protecting Your Digital Future Today</h1>");
+    const graph = ld(html)[0]["@graph"] as { "@type": string | string[] }[];
+    const kinds = graph.map((n) => (Array.isArray(n["@type"]) ? n["@type"][0] : n["@type"]));
+    expect(kinds).toEqual(expect.arrayContaining(["Organization", "Person", "WebSite", "WebPage"]));
+    expect(kinds.filter((k) => k === "Person")).toHaveLength(3);
+  });
+
+  it("marks articles up as BlogPosting and keeps JSON-LD safe inside the page", async () => {
+    const { html } = await page("/insights/how-ai-improves-threat-detection");
+    const post = ld(html)[0];
+    expect(post["@type"]).toBe("BlogPosting");
+    expect(post.datePublished).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(html).toContain('property="article:published_time"');
+  });
+
+  it("answers unknown addresses with a real 404 and noindex, and canonicalises slashes", async () => {
+    const nf = await page("/no-such-page");
+    expect(nf.r.status).toBe(404);
+    expect(nf.r.headers.get("x-robots-tag")).toContain("noindex");
+    expect(nf.html).toContain('content="noindex, follow"');
+    const slash = await fetch(base + "/insights/", { redirect: "manual" });
+    expect(slash.status).toBe(301);
+    expect(slash.headers.get("location")).toBe("/insights");
+    expect((await fetch(base + "/index.html", { redirect: "manual" })).status).toBe(301);
+  });
+
+  it("publishes sitemap.xml, robots.txt and llms.txt from the live content", async () => {
+    const sm = await (await fetch(base + "/sitemap.xml")).text();
+    expect(sm).toContain("<loc>https://www.duruvasa.com/services/compliance-management</loc>");
+    expect(sm).not.toContain("/admin");
+    const robots = await (await fetch(base + "/robots.txt")).text();
+    expect(robots).toContain("Disallow: /admin");
+    expect(robots).toContain("User-agent: GPTBot");
+    expect(robots).toContain("Sitemap: https://www.duruvasa.com/sitemap.xml");
+    const llms = await (await fetch(base + "/llms.txt")).text();
+    expect(llms).toMatch(/^# DuRuVaSa CloudSec/);
+    expect(llms).toContain("info@duruvasa.com");
+    expect(llms).toContain("Founder & CEO");
+    expect((await (await fetch(base + "/llms-full.txt")).text()).length).toBeGreaterThan(llms.length * 3);
+  });
+
+  it("keeps the admin and API out of search results", async () => {
+    expect((await fetch(base + "/admin/")).headers.get("x-robots-tag")).toBe("noindex, nofollow");
+    expect((await fetch(base + "/api/content")).headers.get("x-robots-tag")).toBe("noindex, nofollow");
+  });
+
+  it("reflects CMS edits in the rendered page and sitemap", async () => {
+    const { all } = await import("./db.js");
+    const { invalidateBundle } = await import("./content.js");
+    const { run } = await import("./db.js");
+    const row = all<{ value: string }>("SELECT value FROM settings WHERE key = 'hero'")[0];
+    const hero = JSON.parse(row.value);
+    run("UPDATE settings SET value = ? WHERE key = 'hero'", JSON.stringify({ ...hero, lineA: "Defending Your" }));
+    invalidateBundle();
+    expect((await page("/")).html).toContain("<h1>Defending Your ");
+    run("UPDATE settings SET value = ? WHERE key = 'hero'", row.value);
+    invalidateBundle();
+  });
+});
+
 describe("admin API", () => {
   const admin = new Client();
 

@@ -123,8 +123,8 @@ test("service page: FAQ accordion and structured data", async ({ page }) => {
   const second = page.getByRole("button", { name: /Will this create a flood of false alerts/ });
   await second.click();
   await expect(second).toHaveAttribute("aria-expanded", "true");
-  const ld = await page.locator("script[data-route-ld]").textContent();
-  expect(ld).toContain("FAQPage");
+  const ld = (await page.locator("script[data-route-ld]").allTextContents()).join(" ");
+  for (const type of ["Service", "FAQPage", "BreadcrumbList"]) expect(ld).toContain(`"@type":"${type}"`);
   expect(await page.locator('link[rel="canonical"]').getAttribute("href")).toBe("https://www.duruvasa.com/services/threat-detection");
 });
 

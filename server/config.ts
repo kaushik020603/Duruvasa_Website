@@ -18,6 +18,8 @@ export const config = {
   assetsDir: path.join(ROOT, "server", "assets"),
   publicDir: path.join(ROOT, "public"),
   publicUrl: (env.PUBLIC_URL ?? "http://localhost:5173").replace(/\/$/, ""),
+  /** The one address search engines should index: canonical links, sitemap and structured data use it whatever host served the page. */
+  siteUrl: (env.SITE_URL ?? "https://www.duruvasa.com").replace(/\/$/, ""),
   adminEmail: (env.ADMIN_EMAIL ?? "rajesh@duruvasa.com").toLowerCase(),
   /** Number of reverse proxies in front (Caddy = 1). Needed for correct client IPs and https detection. */
   trustProxy: num(env.TRUST_PROXY, 0),

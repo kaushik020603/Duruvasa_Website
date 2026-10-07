@@ -16,12 +16,11 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="preload" as="image" href="/img/hero.webp" imagesrcset="/img/hero-828.webp 828w, /img/hero.webp 1500w" imagesizes="100vw" fetchpriority="high" />
     <script src="/theme-init.js"></script>
+    <style>#root>.ssr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}</style>
+    <noscript><style>#root>.ssr{position:static;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal;padding:24px;font-family:Arial,sans-serif;color:#eee;line-height:1.6}#root>.ssr a{color:#8cc8ff}</style></noscript>
   </head>
   <body>
     <div id="root"></div>
-    <noscript>
-      <p style="padding:24px;font-family:Arial,sans-serif">DuRuVaSa CloudSec is a cybersecurity consulting firm offering threat detection, compliance management and 24/7 monitoring. Please enable JavaScript to view this site.</p>
-    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

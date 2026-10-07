@@ -36,7 +36,7 @@ export default function Partners() {
                 <span className="logo-box"><img src={p.src} alt={copy ? "" : `${p.name} logo`} loading="lazy" /></span>
                 <b>{p.name}</b>
                 <small>{p.tagline}</small>
-                <span className="visit">Visit website <i aria-hidden="true">↗</i><span className="sr"> (opens in a new tab)</span></span>
+                <span className="visit">Visit website <i aria-hidden="true">↗</i><span className="sr"> of {p.name} (opens in a new tab)</span></span>
               </a>
             );
           })}

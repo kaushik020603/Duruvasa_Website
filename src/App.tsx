@@ -21,11 +21,12 @@ import { useReveal } from "./hooks";
 import { initFx } from "./fx";
 import { installLinkInterceptor, useRoute } from "./lib/router";
 import { useHead } from "./lib/head";
+import { homeTitle } from "../shared/seo";
 import { PrefsProvider, useAnalytics } from "./lib/prefs";
 
 function Home() {
   useHead({
-    title: SITE.name, path: "/",
+    title: homeTitle(SITE.name), path: "/",
     jsonLd: {
       "@context": "https://schema.org", "@type": "Organization", name: SITE.name, url: SITE.url,
       logo: SITE.url + img.logo, description: SITE.description,
